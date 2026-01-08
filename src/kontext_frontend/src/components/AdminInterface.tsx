@@ -297,6 +297,9 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
   const [newAdminPrincipal, setNewAdminPrincipal] = useState('');
   const [adminActionLoading, setAdminActionLoading] = useState(false);
   
+  // Platform Settings loading state
+  const [loading, setLoading] = useState(false);
+  
   // Notification Command Center State
   
   // Platform Wallet State
