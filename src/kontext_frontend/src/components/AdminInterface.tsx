@@ -3902,21 +3902,167 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
                     💳 Stripe Configuration
                   </h3>
                   
-                  <div className="rounded-lg p-4" style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)'
-                  }}>
-                    <p className="text-sm mb-4" style={{ color: '#9ca3af' }}>
-                      Update Stripe keys via dfx command line:
-                    </p>
-                    <pre className="p-3 rounded text-xs overflow-x-auto" style={{
-                      background: 'rgba(0, 0, 0, 0.5)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      color: '#10b981'
+                  <div className="space-y-4">
+                    {/* Stripe Secret Key */}
+                    <div className="rounded-lg p-4" style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
                     }}>
-{`dfx canister call kontext_backend updateStripeKeys \\
-  '("sk_live_YOUR_SECRET_KEY", "pk_live_YOUR_PUBLISHABLE_KEY")'`}
-                    </pre>
+                      <label className="block text-sm font-medium mb-2" style={{ color: '#d1d5db' }}>
+                        Stripe Secret Key
+                        <span className="ml-2 text-xs" style={{ color: '#9ca3af' }}>Must start with sk_live_ or sk_test_</span>
+                      </label>
+                      <div className="flex gap-3">
+                        <input
+                          type="password"
+                          id="stripeSecretKey"
+                          placeholder="sk_live_... or sk_test_..."
+                          className="flex-1 px-4 py-2 rounded-lg border text-sm"
+                          style={{
+                            background: 'rgba(0, 0, 0, 0.3)',
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            color: '#fff'
+                          }}
+                        />
+                        <button
+                          onClick={async () => {
+                            const secretInput = document.getElementById('stripeSecretKey') as HTMLInputElement;
+                            const publishableInput = document.getElementById('stripePublishableKey') as HTMLInputElement;
+                            const secretKey = secretInput.value.trim();
+                            const publishableKey = publishableInput.value.trim();
+                            
+                            if (!secretKey || !publishableKey) {
+                              setError('Both Stripe secret and publishable keys are required');
+                              return;
+                            }
+                            
+                            if (!secretKey.startsWith('sk_live_') && !secretKey.startsWith('sk_test_')) {
+                              setError('Invalid secret key format. Must start with sk_live_ or sk_test_');
+                              return;
+                            }
+                            
+                            try {
+                              setLoading(true);
+                              setError('');
+                              const result = await mainActor.updateStripeKeys(secretKey, publishableKey);
+                              if ('ok' in result) {
+                                setSuccess(result.ok);
+                                secretInput.value = '';
+                                publishableInput.value = '';
+                              } else {
+                                setError(result.err);
+                              }
+                            } catch (err) {
+                              setError(`Failed to update Stripe keys: ${err}`);
+                            } finally {
+                              setLoading(false);
+                            }
+                          }}
+                          disabled={loading}
+                          className="px-6 py-2 rounded-lg font-medium text-sm transition-all"
+                          style={{
+                            background: loading ? 'rgba(100, 100, 100, 0.5)' : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                            color: '#fff',
+                            cursor: loading ? 'not-allowed' : 'pointer'
+                          }}
+                        >
+                          {loading ? 'Updating...' : 'Update'}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Stripe Publishable Key */}
+                    <div className="rounded-lg p-4" style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}>
+                      <label className="block text-sm font-medium mb-2" style={{ color: '#d1d5db' }}>
+                        Stripe Publishable Key
+                        <span className="ml-2 text-xs" style={{ color: '#9ca3af' }}>Must start with pk_live_ or pk_test_</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="stripePublishableKey"
+                        placeholder="pk_live_... or pk_test_..."
+                        className="w-full px-4 py-2 rounded-lg border text-sm"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.3)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: '#fff'
+                        }}
+                      />
+                      <p className="text-xs mt-2" style={{ color: '#9ca3af' }}>
+                        💡 Both secret and publishable keys must be provided together. Click the Update button above.
+                      </p>
+                    </div>
+
+                    {/* Stripe Webhook Secret */}
+                    <div className="rounded-lg p-4" style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}>
+                      <label className="block text-sm font-medium mb-2" style={{ color: '#d1d5db' }}>
+                        Stripe Webhook Secret
+                        <span className="ml-2 text-xs" style={{ color: '#9ca3af' }}>Must start with whsec_</span>
+                      </label>
+                      <div className="flex gap-3">
+                        <input
+                          type="password"
+                          id="stripeWebhookSecret"
+                          placeholder="whsec_..."
+                          className="flex-1 px-4 py-2 rounded-lg border text-sm"
+                          style={{
+                            background: 'rgba(0, 0, 0, 0.3)',
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            color: '#fff'
+                          }}
+                        />
+                        <button
+                          onClick={async () => {
+                            const input = document.getElementById('stripeWebhookSecret') as HTMLInputElement;
+                            const webhookSecret = input.value.trim();
+                            
+                            if (!webhookSecret) {
+                              setError('Webhook secret cannot be empty');
+                              return;
+                            }
+                            
+                            if (!webhookSecret.startsWith('whsec_')) {
+                              setError('Invalid webhook secret format. Must start with whsec_');
+                              return;
+                            }
+                            
+                            try {
+                              setLoading(true);
+                              setError('');
+                              const result = await mainActor.updateStripeWebhookSecret(webhookSecret);
+                              if ('ok' in result) {
+                                setSuccess(result.ok);
+                                input.value = '';
+                              } else {
+                                setError(result.err);
+                              }
+                            } catch (err) {
+                              setError(`Failed to update webhook secret: ${err}`);
+                            } finally {
+                              setLoading(false);
+                            }
+                          }}
+                          disabled={loading}
+                          className="px-6 py-2 rounded-lg font-medium text-sm transition-all"
+                          style={{
+                            background: loading ? 'rgba(100, 100, 100, 0.5)' : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                            color: '#fff',
+                            cursor: loading ? 'not-allowed' : 'pointer'
+                          }}
+                        >
+                          {loading ? 'Updating...' : 'Update'}
+                        </button>
+                      </div>
+                      <p className="text-xs mt-2" style={{ color: '#9ca3af' }}>
+                        Get this from your Stripe webhook settings
+                      </p>
+                    </div>
                   </div>
                 </div>
 

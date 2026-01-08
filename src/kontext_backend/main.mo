@@ -494,6 +494,24 @@ actor Main {
         #ok("Stripe keys updated successfully")
     };
 
+    // Update Stripe webhook secret (admin only)
+    public shared(msg) func updateStripeWebhookSecret(newWebhookSecret: Text) : async Result.Result<Text, Text> {
+        if (not _isAdmin(msg.caller)) {
+            return #err("Unauthorized: Admin access required");
+        };
+        
+        if (Text.size(newWebhookSecret) < 10) {
+            return #err("Invalid webhook secret: Key too short");
+        };
+        
+        if (not Text.startsWith(newWebhookSecret, #text "whsec_")) {
+            return #err("Invalid webhook secret: Must start with whsec_");
+        };
+        
+        stripeWebhookSecret := newWebhookSecret;
+        #ok("Stripe webhook secret updated successfully")
+    };
+
     // ===============================
     // AI MODEL API KEY MANAGEMENT
     // ===============================
