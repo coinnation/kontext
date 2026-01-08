@@ -288,7 +288,7 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
   }, []);
   
   // Tab State
-  const [activeTab, setActiveTab] = useState<'wallet' | 'economy' | 'debug' | 'financials' | 'notifications' | 'pools' | 'userAdmin' | 'wasmConfig' | 'subscriptions' | 'university' | 'marketplace' | 'forumCategories'>('wallet');
+  const [activeTab, setActiveTab] = useState<'wallet' | 'economy' | 'debug' | 'financials' | 'notifications' | 'pools' | 'userAdmin' | 'wasmConfig' | 'subscriptions' | 'university' | 'marketplace' | 'forumCategories' | 'platformSettings'>('wallet');
   const [activeDebugTab, setActiveDebugTab] = useState<'overview' | 'sessions' | 'templates' | 'prompts' | 'quality' | 'fileanalysis'>('overview');
   
   // Notification Command Center State
@@ -1802,7 +1802,8 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
               { key: 'forumCategories', label: '💬 Forum', fullLabel: '💬 Forum Categories', desc: 'Community forum management' },
               { key: 'university', label: '🎓 University', fullLabel: '🎓 University Content', desc: 'Create & manage programs/courses (includes publish/unpublish)' },
               { key: 'marketplace', label: '🛒 Market', fullLabel: '🛒 Marketplace Admin', desc: 'Manage all listings, publish/unpublish, delete' },
-              { key: 'subscriptions', label: '💳 Plans', fullLabel: '💳 Subscription Plans', desc: 'Manage pricing & features' }
+              { key: 'subscriptions', label: '💳 Plans', fullLabel: '💳 Subscription Plans', desc: 'Manage pricing & features' },
+              { key: 'platformSettings', label: '⚙️ Settings', fullLabel: '⚙️ Platform Settings', desc: 'API keys & platform configuration' }
             ].map(tab => (
               <button
                 key={tab.key}
@@ -3536,6 +3537,326 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
           </div>
         )}
 
+        {activeTab === 'platformSettings' && (
+          <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+            <h2 className="text-xl lg:text-2xl xl:text-3xl font-semibold mb-6 lg:mb-8 text-center lg:text-left" style={{ 
+              background: 'linear-gradient(135deg, #f97316, #fbbf24)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              ⚙️ Platform Settings
+            </h2>
+            
+            <div className="rounded-xl p-6 lg:p-8" style={{
+              background: 'rgba(17, 17, 17, 0.6)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
+              {/* API Keys Section */}
+              <div className="space-y-6">
+                <h3 className="text-lg lg:text-xl font-semibold mb-4" style={{ color: '#ff6b35' }}>
+                  🔑 AI Model API Keys
+                </h3>
+                
+                <div className="space-y-4">
+                  {/* Claude API Key */}
+                  <div className="rounded-lg p-4" style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}>
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#d1d5db' }}>
+                      Claude (Anthropic) API Key
+                      <span className="ml-2 text-xs" style={{ color: '#9ca3af' }}>Must start with sk-ant-</span>
+                    </label>
+                    <div className="flex gap-3">
+                      <input
+                        type="password"
+                        id="claudeApiKey"
+                        placeholder="sk-ant-..."
+                        className="flex-1 px-4 py-2 rounded-lg border text-sm"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.3)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: '#fff'
+                        }}
+                      />
+                      <button
+                        onClick={async () => {
+                          const input = document.getElementById('claudeApiKey') as HTMLInputElement;
+                          const key = input.value.trim();
+                          
+                          if (!key) {
+                            setError('Claude API key cannot be empty');
+                            return;
+                          }
+                          
+                          if (!key.startsWith('sk-ant-')) {
+                            setError('Invalid Claude API key format. Must start with sk-ant-');
+                            return;
+                          }
+                          
+                          try {
+                            setLoading(true);
+                            setError('');
+                            const result = await mainActor.updateClaudeApiKey(key);
+                            if ('ok' in result) {
+                              setSuccess(result.ok);
+                              input.value = '';
+                            } else {
+                              setError(result.err);
+                            }
+                          } catch (err) {
+                            setError(`Failed to update Claude API key: ${err}`);
+                          } finally {
+                            setLoading(false);
+                          }
+                        }}
+                        disabled={loading}
+                        className="px-6 py-2 rounded-lg font-medium text-sm transition-all"
+                        style={{
+                          background: 'linear-gradient(135deg, #ff6b35, #f97316)',
+                          color: '#fff',
+                          opacity: loading ? 0.6 : 1,
+                          cursor: loading ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        Update
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* OpenAI API Key */}
+                  <div className="rounded-lg p-4" style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}>
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#d1d5db' }}>
+                      OpenAI API Key
+                      <span className="ml-2 text-xs" style={{ color: '#9ca3af' }}>Must start with sk-</span>
+                    </label>
+                    <div className="flex gap-3">
+                      <input
+                        type="password"
+                        id="openaiApiKey"
+                        placeholder="sk-..."
+                        className="flex-1 px-4 py-2 rounded-lg border text-sm"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.3)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: '#fff'
+                        }}
+                      />
+                      <button
+                        onClick={async () => {
+                          const input = document.getElementById('openaiApiKey') as HTMLInputElement;
+                          const key = input.value.trim();
+                          
+                          if (!key) {
+                            setError('OpenAI API key cannot be empty');
+                            return;
+                          }
+                          
+                          if (!key.startsWith('sk-')) {
+                            setError('Invalid OpenAI API key format. Must start with sk-');
+                            return;
+                          }
+                          
+                          try {
+                            setLoading(true);
+                            setError('');
+                            const result = await mainActor.updateOpenAIApiKey(key);
+                            if ('ok' in result) {
+                              setSuccess(result.ok);
+                              input.value = '';
+                            } else {
+                              setError(result.err);
+                            }
+                          } catch (err) {
+                            setError(`Failed to update OpenAI API key: ${err}`);
+                          } finally {
+                            setLoading(false);
+                          }
+                        }}
+                        disabled={loading}
+                        className="px-6 py-2 rounded-lg font-medium text-sm transition-all"
+                        style={{
+                          background: 'linear-gradient(135deg, #ff6b35, #f97316)',
+                          color: '#fff',
+                          opacity: loading ? 0.6 : 1,
+                          cursor: loading ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        Update
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Gemini API Key */}
+                  <div className="rounded-lg p-4" style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}>
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#d1d5db' }}>
+                      Google Gemini API Key
+                      <span className="ml-2 text-xs" style={{ color: '#9ca3af' }}>Must start with AIza</span>
+                    </label>
+                    <div className="flex gap-3">
+                      <input
+                        type="password"
+                        id="geminiApiKey"
+                        placeholder="AIza..."
+                        className="flex-1 px-4 py-2 rounded-lg border text-sm"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.3)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: '#fff'
+                        }}
+                      />
+                      <button
+                        onClick={async () => {
+                          const input = document.getElementById('geminiApiKey') as HTMLInputElement;
+                          const key = input.value.trim();
+                          
+                          if (!key) {
+                            setError('Gemini API key cannot be empty');
+                            return;
+                          }
+                          
+                          if (!key.startsWith('AIza')) {
+                            setError('Invalid Gemini API key format. Must start with AIza');
+                            return;
+                          }
+                          
+                          try {
+                            setLoading(true);
+                            setError('');
+                            const result = await mainActor.updateGeminiApiKey(key);
+                            if ('ok' in result) {
+                              setSuccess(result.ok);
+                              input.value = '';
+                            } else {
+                              setError(result.err);
+                            }
+                          } catch (err) {
+                            setError(`Failed to update Gemini API key: ${err}`);
+                          } finally {
+                            setLoading(false);
+                          }
+                        }}
+                        disabled={loading}
+                        className="px-6 py-2 rounded-lg font-medium text-sm transition-all"
+                        style={{
+                          background: 'linear-gradient(135deg, #ff6b35, #f97316)',
+                          color: '#fff',
+                          opacity: loading ? 0.6 : 1,
+                          cursor: loading ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        Update
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Kimi API Key */}
+                  <div className="rounded-lg p-4" style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}>
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#d1d5db' }}>
+                      Kimi (Moonshot AI) API Key
+                    </label>
+                    <div className="flex gap-3">
+                      <input
+                        type="password"
+                        id="kimiApiKey"
+                        placeholder="Your Kimi API key"
+                        className="flex-1 px-4 py-2 rounded-lg border text-sm"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.3)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: '#fff'
+                        }}
+                      />
+                      <button
+                        onClick={async () => {
+                          const input = document.getElementById('kimiApiKey') as HTMLInputElement;
+                          const key = input.value.trim();
+                          
+                          if (!key) {
+                            setError('Kimi API key cannot be empty');
+                            return;
+                          }
+                          
+                          try {
+                            setLoading(true);
+                            setError('');
+                            const result = await mainActor.updateKimiApiKey(key);
+                            if ('ok' in result) {
+                              setSuccess(result.ok);
+                              input.value = '';
+                            } else {
+                              setError(result.err);
+                            }
+                          } catch (err) {
+                            setError(`Failed to update Kimi API key: ${err}`);
+                          } finally {
+                            setLoading(false);
+                          }
+                        }}
+                        disabled={loading}
+                        className="px-6 py-2 rounded-lg font-medium text-sm transition-all"
+                        style={{
+                          background: 'linear-gradient(135deg, #ff6b35, #f97316)',
+                          color: '#fff',
+                          opacity: loading ? 0.6 : 1,
+                          cursor: loading ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        Update
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Information Box */}
+                <div className="rounded-lg p-4 mt-6" style={{
+                  background: 'rgba(59, 130, 246, 0.1)',
+                  border: '1px solid rgba(59, 130, 246, 0.3)'
+                }}>
+                  <p className="text-sm" style={{ color: '#93c5fd' }}>
+                    <strong>ℹ️ Security Note:</strong> API keys are stored securely in the platform canister and are never exposed to the frontend. 
+                    Only admins can update these keys. The keys can be retrieved via backend query methods for platform use.
+                  </p>
+                </div>
+
+                {/* Stripe Keys Section */}
+                <div className="mt-8 pt-6" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                  <h3 className="text-lg lg:text-xl font-semibold mb-4" style={{ color: '#ff6b35' }}>
+                    💳 Stripe Configuration
+                  </h3>
+                  
+                  <div className="rounded-lg p-4" style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}>
+                    <p className="text-sm mb-4" style={{ color: '#9ca3af' }}>
+                      Update Stripe keys via dfx command line:
+                    </p>
+                    <pre className="p-3 rounded text-xs overflow-x-auto" style={{
+                      background: 'rgba(0, 0, 0, 0.5)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      color: '#10b981'
+                    }}>
+{`dfx canister call kontext_backend updateStripeKeys \\
+  '("sk_live_YOUR_SECRET_KEY", "pk_live_YOUR_PUBLISHABLE_KEY")'`}
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Prompts and Quality tabs */}
         {activeTab === 'debug' && (activeDebugTab === 'prompts' || activeDebugTab === 'quality') && (
