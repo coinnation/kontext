@@ -275,12 +275,28 @@ export class ClaudeService {
 
     public async getApiKey(): Promise<string> {
         try {
-            // Get API key from store
+            // Priority 1: Get platform-configured API key from backend canister
+            let platformKey = '';
+            try {
+                const { useCanister } = await import('./useCanister');
+                const { actor } = useCanister();
+                if (actor) {
+                    platformKey = await actor.getClaudeApiKey();
+                    if (platformKey && platformKey.trim().length > 0) {
+                        console.log('🔑 [Claude] Using platform-configured API key');
+                        return platformKey;
+                    }
+                }
+            } catch (err) {
+                console.warn('⚠️ [Claude] Failed to fetch platform API key, falling back to user key:', err);
+            }
+
+            // Priority 2: Get user's personal API key from store
             const { useAppStore } = await import('./store/appStore');
             const store = useAppStore.getState();
             const apiKey = store.claudeApiKey;
             
-            // Fallback to environment variable or throw error if not set
+            // Priority 3: Fallback to environment variable
             const fallbackKey = import.meta.env.VITE_ANTHROPIC_API_KEY || '';
             const finalKey = apiKey || fallbackKey;
             

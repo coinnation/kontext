@@ -185,13 +185,29 @@ export class OpenAIService {
 
     public async getApiKey(): Promise<string> {
         try {
-            // Get API key from store
+            // Priority 1: Get platform-configured API key from backend canister
+            let platformKey = '';
+            try {
+                const { useCanister } = await import('./useCanister');
+                const { actor } = useCanister();
+                if (actor) {
+                    platformKey = await actor.getOpenAIApiKey();
+                    if (platformKey && platformKey.trim().length > 0) {
+                        console.log('🔑 [OpenAI] Using platform-configured API key');
+                        return platformKey;
+                    }
+                }
+            } catch (err) {
+                console.warn('⚠️ [OpenAI] Failed to fetch platform API key, falling back to user key:', err);
+            }
+
+            // Priority 2: Get user's personal API key from store
             const { useAppStore } = await import('./store/appStore');
             const store = useAppStore.getState();
             const apiKey = store.openaiApiKey;
             
             if (!apiKey || apiKey.trim().length === 0) {
-                throw new Error('OpenAI API key is empty or invalid. Please set your API key in Profile & Settings.');
+                throw new Error('OpenAI API key is empty or invalid. Please set your API key in Profile & Settings or configure platform key in Admin Settings.');
             }
             
             if (!apiKey.startsWith('sk-')) {
