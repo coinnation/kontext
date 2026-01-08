@@ -6,6 +6,7 @@ import { generationLogger, DebugControl } from '../services/GenerationLoggingSer
 import { HttpAgent } from '@dfinity/agent';
 import { AssetManager } from '@dfinity/assets';
 import { Principal } from '@dfinity/principal';
+import { platformCanisterService } from '../services/PlatformCanisterService';
 
 // 🚀 PWA OPTIMIZATION: Lazy load heavy admin sub-components for faster initial Admin panel open
 const EconomyDashboard = React.lazy(() => 
@@ -291,6 +292,11 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState<'wallet' | 'economy' | 'debug' | 'financials' | 'notifications' | 'pools' | 'userAdmin' | 'wasmConfig' | 'subscriptions' | 'university' | 'marketplace' | 'forumCategories' | 'platformSettings'>('wallet');
   const [activeDebugTab, setActiveDebugTab] = useState<'overview' | 'sessions' | 'templates' | 'prompts' | 'quality' | 'fileanalysis'>('overview');
   
+  // Admin management state
+  const [admins, setAdmins] = useState<string[]>([]);
+  const [newAdminPrincipal, setNewAdminPrincipal] = useState('');
+  const [adminActionLoading, setAdminActionLoading] = useState(false);
+  
   // Notification Command Center State
   
   // Platform Wallet State
@@ -387,6 +393,63 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
       setCycleEquivalent(fallbackCycles);
       
       return fallbackCycles;
+    }
+  };
+
+  // Load admins when platform settings tab is active
+  useEffect(() => {
+    if (activeTab === 'platformSettings') {
+      loadAdmins();
+    }
+  }, [activeTab]);
+
+  // Admin Management Functions
+  const loadAdmins = async () => {
+    try {
+      const result = await platformCanisterService.getAdmins();
+      setAdmins(result);
+    } catch (err: any) {
+      console.error('Failed to load admins:', err);
+    }
+  };
+
+  const handleAddAdmin = async () => {
+    if (!newAdminPrincipal.trim()) {
+      setError('Please enter a valid principal ID');
+      return;
+    }
+
+    try {
+      setAdminActionLoading(true);
+      setError('');
+      setSuccess('');
+      await platformCanisterService.addAdmin(newAdminPrincipal.trim());
+      setNewAdminPrincipal('');
+      setSuccess(`Successfully added admin: ${newAdminPrincipal.trim()}`);
+      await loadAdmins();
+    } catch (err: any) {
+      setError(err.message || 'Failed to add admin');
+    } finally {
+      setAdminActionLoading(false);
+    }
+  };
+
+  const handleRemoveAdmin = async (adminPrincipal: string) => {
+    if (!confirm(`Are you sure you want to remove this admin?\n\n${adminPrincipal}`)) {
+      return;
+    }
+
+    try {
+      setAdminActionLoading(true);
+      setError('');
+      setSuccess('');
+      await platformCanisterService.removeAdmin(adminPrincipal);
+      setSuccess(`Successfully removed admin: ${adminPrincipal}`);
+      await loadAdmins();
+    } catch (err: any) {
+      setError(err.message || 'Failed to remove admin');
+    } finally {
+      setAdminActionLoading(false);
     }
   };
 
@@ -3851,6 +3914,113 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
 {`dfx canister call kontext_backend updateStripeKeys \\
   '("sk_live_YOUR_SECRET_KEY", "pk_live_YOUR_PUBLISHABLE_KEY")'`}
                     </pre>
+                  </div>
+                </div>
+
+                {/* Admin Management Section */}
+                <div className="mt-8 pt-6" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                  <h3 className="text-lg lg:text-xl font-semibold mb-4" style={{ color: '#ff6b35' }}>
+                    👥 Admin Management
+                  </h3>
+                  
+                  {/* Add New Admin */}
+                  <div className="rounded-lg p-4 mb-4" style={{
+                    background: 'rgba(59, 130, 246, 0.1)',
+                    border: '1px solid rgba(59, 130, 246, 0.3)'
+                  }}>
+                    <h4 className="text-sm font-semibold mb-3 flex items-center gap-2" style={{ color: '#93c5fd' }}>
+                      ➕ Add New Admin
+                    </h4>
+                    <div className="flex gap-3">
+                      <input
+                        type="text"
+                        placeholder="Enter Principal ID"
+                        value={newAdminPrincipal}
+                        onChange={(e) => setNewAdminPrincipal(e.target.value)}
+                        disabled={adminActionLoading}
+                        className="flex-1 px-4 py-2 rounded-lg border text-sm"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.3)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: '#fff'
+                        }}
+                      />
+                      <button
+                        onClick={handleAddAdmin}
+                        disabled={adminActionLoading || !newAdminPrincipal.trim()}
+                        className="px-6 py-2 rounded-lg font-medium text-sm transition-all"
+                        style={{
+                          background: adminActionLoading || !newAdminPrincipal.trim() 
+                            ? 'rgba(100, 100, 100, 0.5)' 
+                            : 'linear-gradient(135deg, #3b82f6, #2563eb)',
+                          color: '#fff',
+                          cursor: adminActionLoading || !newAdminPrincipal.trim() ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        {adminActionLoading ? 'Adding...' : 'Add Admin'}
+                      </button>
+                    </div>
+                    <p className="text-xs mt-2" style={{ color: '#9ca3af' }}>
+                      Enter the full principal ID of the user you want to grant admin access
+                    </p>
+                  </div>
+
+                  {/* Current Admins List */}
+                  <div className="rounded-lg p-4" style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}>
+                    <h4 className="text-sm font-semibold mb-3" style={{ color: '#d1d5db' }}>
+                      🛡️ Current Admins ({admins.length})
+                    </h4>
+                    {admins.length === 0 ? (
+                      <div className="text-center py-8" style={{ color: '#9ca3af' }}>
+                        Loading admins...
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {admins.map((admin, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-3 rounded-lg"
+                            style={{
+                              background: 'rgba(255, 255, 255, 0.05)',
+                              border: '1px solid rgba(255, 255, 255, 0.1)'
+                            }}
+                          >
+                            <code className="text-xs font-mono flex-1 truncate" style={{ color: '#d1d5db' }}>
+                              {admin}
+                            </code>
+                            <button
+                              onClick={() => handleRemoveAdmin(admin)}
+                              disabled={adminActionLoading}
+                              className="ml-3 px-3 py-1 text-xs rounded transition-all"
+                              style={{
+                                background: adminActionLoading ? 'rgba(100, 100, 100, 0.3)' : 'rgba(239, 68, 68, 0.2)',
+                                color: adminActionLoading ? '#666' : '#ef4444',
+                                border: '1px solid ' + (adminActionLoading ? 'rgba(100, 100, 100, 0.3)' : 'rgba(239, 68, 68, 0.3)'),
+                                cursor: adminActionLoading ? 'not-allowed' : 'pointer'
+                              }}
+                              title="Remove admin"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Security Notice */}
+                  <div className="rounded-lg p-4 mt-4" style={{
+                    background: 'rgba(245, 158, 11, 0.1)',
+                    border: '1px solid rgba(245, 158, 11, 0.3)'
+                  }}>
+                    <p className="text-sm" style={{ color: '#fbbf24' }}>
+                      <strong>⚠️ Security Notice:</strong> Admins have full access to all platform functions, 
+                      including financial data, user management, and system configuration. Only grant admin 
+                      access to trusted individuals. The main admin principal cannot be removed via this interface.
+                    </p>
                   </div>
                 </div>
               </div>

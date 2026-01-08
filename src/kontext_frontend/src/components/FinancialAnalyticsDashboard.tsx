@@ -126,10 +126,6 @@ const FinancialAnalyticsDashboard: React.FC = () => {
     marketplaceShare: false
   });
 
-  // Admin management state
-  const [admins, setAdmins] = useState<string[]>([]);
-  const [newAdminPrincipal, setNewAdminPrincipal] = useState('');
-  const [adminActionLoading, setAdminActionLoading] = useState(false);
 
   useEffect(() => {
     loadAllData();
@@ -145,8 +141,7 @@ const FinancialAnalyticsDashboard: React.FC = () => {
         loadICPReserve(),
         loadDomainStats(),
         loadTeamMembers(),
-        loadTeamEarnings(),
-        loadAdmins()
+        loadTeamEarnings()
       ]);
     } catch (err: any) {
       setError(err.message || 'Failed to load analytics data');
@@ -231,51 +226,6 @@ const FinancialAnalyticsDashboard: React.FC = () => {
     }
   };
 
-  // Admin Management Functions
-  const loadAdmins = async () => {
-    try {
-      const result = await platformCanisterService.getAdmins();
-      setAdmins(result);
-    } catch (err: any) {
-      console.error('Failed to load admins:', err);
-    }
-  };
-
-  const handleAddAdmin = async () => {
-    if (!newAdminPrincipal.trim()) {
-      setError('Please enter a valid principal ID');
-      return;
-    }
-
-    try {
-      setAdminActionLoading(true);
-      setError(null);
-      await platformCanisterService.addAdmin(newAdminPrincipal.trim());
-      setNewAdminPrincipal('');
-      await loadAdmins();
-    } catch (err: any) {
-      setError(err.message || 'Failed to add admin');
-    } finally {
-      setAdminActionLoading(false);
-    }
-  };
-
-  const handleRemoveAdmin = async (adminPrincipal: string) => {
-    if (!confirm(`Are you sure you want to remove this admin?\n\n${adminPrincipal}`)) {
-      return;
-    }
-
-    try {
-      setAdminActionLoading(true);
-      setError(null);
-      await platformCanisterService.removeAdmin(adminPrincipal);
-      await loadAdmins();
-    } catch (err: any) {
-      setError(err.message || 'Failed to remove admin');
-    } finally {
-      setAdminActionLoading(false);
-    }
-  };
 
   const exportReport = () => {
     try {
@@ -422,8 +372,7 @@ const FinancialAnalyticsDashboard: React.FC = () => {
             { key: 'reserves', label: 'Reserves' },
             { key: 'domains', label: 'Domains' },
             { key: 'team', label: 'Team' },
-            { key: 'revenue', label: 'Revenue' },
-            { key: 'admins', label: 'Admins' }
+            { key: 'revenue', label: 'Revenue' }
           ].map(tab => (
             <button
               key={tab.key}
@@ -1038,100 +987,6 @@ const FinancialAnalyticsDashboard: React.FC = () => {
         </div>
         )}
 
-        {/* ADMINS TAB */}
-        {activeTab === 'admins' && (
-        <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-blue-500" />
-                Admin Management
-              </CardTitle>
-              <CardDescription>
-                Manage platform administrators who can access this dashboard and perform admin functions
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Add New Admin Section */}
-              <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-2 border-blue-200 dark:border-blue-800">
-                <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                  <UserPlus className="w-4 h-4" />
-                  Add New Admin
-                </h3>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Enter Principal ID"
-                    value={newAdminPrincipal}
-                    onChange={(e) => setNewAdminPrincipal(e.target.value)}
-                    className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
-                    disabled={adminActionLoading}
-                  />
-                  <button
-                    onClick={handleAddAdmin}
-                    disabled={adminActionLoading || !newAdminPrincipal.trim()}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Add Admin
-                  </button>
-                </div>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
-                  Enter the full principal ID of the user you want to grant admin access
-                </p>
-              </div>
-
-              {/* Current Admins List */}
-              <div>
-                <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                  <Shield className="w-4 h-4" />
-                  Current Admins ({admins.length})
-                </h3>
-                {admins.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    Loading admins...
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {admins.map((admin, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 transition-colors"
-                      >
-                        <div className="flex items-center gap-3 flex-1 min-w-0">
-                          <Shield className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                          <code className="text-xs font-mono truncate flex-1">
-                            {admin}
-                          </code>
-                        </div>
-                        <button
-                          onClick={() => handleRemoveAdmin(admin)}
-                          disabled={adminActionLoading}
-                          className="ml-2 px-3 py-1 text-xs bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded hover:bg-red-200 dark:hover:bg-red-900/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1 flex-shrink-0"
-                          title="Remove admin"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                          Remove
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Security Notice */}
-              <Alert>
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  <strong>Security Notice:</strong> Admins have full access to all platform functions, 
-                  including financial data, user management, and system configuration. Only grant admin 
-                  access to trusted individuals. The main admin principal cannot be removed via this interface.
-                </AlertDescription>
-              </Alert>
-            </CardContent>
-          </Card>
-        </div>
-        )}
       </div>
     </div>
   );
