@@ -119,9 +119,11 @@ actor Main {
     private stable var stripeSecretKey: Text = "sk_live_YOUR_STRIPE_SECRET_KEY_HERE";
     
     // Stripe publishable key for frontend (safe to expose)
-    private stable var stripePublishableKey: Text = "pk_live_51S5NuQDl32OUu0EXRlPQyyBlBzjzR8ESqJ4erA3EGxqohdfK7u5K53jSs8dbdCdclsPOVk1MnZPj5DXV7jLifS0R009Sndm3Tp";
+    // TODO: Set via admin function after deployment
+    private stable var stripePublishableKey: Text = "pk_live_YOUR_STRIPE_PUBLISHABLE_KEY_HERE";
     
     // Stripe webhook secret for verifying webhook signatures
+    // TODO: Set this from your Stripe webhook settings after deployment
     private stable var stripeWebhookSecret: Text = "";
     
     // ===============================
