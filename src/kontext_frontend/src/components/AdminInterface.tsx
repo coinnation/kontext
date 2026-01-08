@@ -1667,16 +1667,6 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
   };
 
   // Refresh data based on active tab
-  const refreshData = () => {
-    if (activeTab === 'wallet') {
-      console.log('🔄 [AdminInterface] Refreshing wallet data (mainnet)...');
-      loadWalletData();
-    } else if (activeTab === 'debug') {
-      console.log('🔄 [AdminInterface] Refreshing debug sessions (mainnet)...');
-      loadDebugSessions();
-    }
-    // Other tabs don't have refresh logic yet
-  };
 
   // 🔧 NEW: Sync debug status on mount and when tab changes
   useEffect(() => {
@@ -1787,31 +1777,6 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
           </button>
         </div>
 
-        {/* Bottom Row - Action Buttons */}
-        <div className="flex gap-2 items-center flex-wrap">
-            <button
-              onClick={refreshData}
-              disabled={isLoading}
-              className="px-4 py-2 lg:px-6 lg:py-3 rounded-lg font-medium transition-all duration-300 whitespace-nowrap"
-              style={{
-                background: 'rgba(255, 107, 53, 0.1)',
-                border: '1px solid var(--kontext-border-accent)',
-                color: 'var(--kontext-orange)',
-                opacity: isLoading ? 0.6 : 1,
-                cursor: isLoading ? 'not-allowed' : 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                if (!isLoading) {
-                  e.currentTarget.style.background = 'rgba(255, 107, 53, 0.2)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 107, 53, 0.1)';
-              }}
-            >
-              {isLoading ? '⏳ Loading...' : '🔄 Refresh'}
-            </button>
-          </div>
         </div>
 
       {/* Tab Navigation - Full Width with Wrapping */}
@@ -1971,14 +1936,43 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
 
         {activeTab === 'wallet' && (
           <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-            <h2 className="text-xl lg:text-2xl xl:text-3xl font-semibold mb-6 lg:mb-8 text-center lg:text-left" style={{ 
-              background: 'linear-gradient(135deg, #f97316, #fbbf24)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}>
-              💳 Platform Wallet (Mainnet)
-            </h2>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+              <h2 className="text-xl lg:text-2xl xl:text-3xl font-semibold text-center lg:text-left" style={{ 
+                background: 'linear-gradient(135deg, #f97316, #fbbf24)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                margin: 0
+              }}>
+                💳 Platform Wallet (Mainnet)
+              </h2>
+              <button
+                onClick={() => {
+                  console.log('🔄 [AdminInterface] Refreshing wallet data (mainnet)...');
+                  loadWalletData();
+                }}
+                disabled={isLoading}
+                className="px-4 py-2 rounded-lg font-medium text-sm transition-all"
+                style={{
+                  background: isLoading ? 'rgba(100, 100, 100, 0.5)' : 'rgba(255, 107, 53, 0.1)',
+                  border: '1px solid rgba(255, 107, 53, 0.3)',
+                  color: isLoading ? '#888' : '#ff6b35',
+                  cursor: isLoading ? 'not-allowed' : 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isLoading) {
+                    e.currentTarget.style.background = 'rgba(255, 107, 53, 0.2)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isLoading) {
+                    e.currentTarget.style.background = 'rgba(255, 107, 53, 0.1)';
+                  }
+                }}
+              >
+                {isLoading ? '⏳ Loading...' : '🔄 Refresh'}
+              </button>
+            </div>
             
             <div className="rounded-xl p-6 lg:p-8 mb-8" style={{ 
               background: 'rgba(17, 17, 17, 0.6)',
@@ -2261,14 +2255,43 @@ export const AdminInterface: React.FC<AdminInterfaceProps> = ({ onClose }) => {
             maxWidth: '1400px',
             margin: '0 auto'
           }}>
-            <h2 className="text-xl lg:text-2xl font-semibold mb-6 text-center lg:text-left" style={{ 
-              background: 'linear-gradient(135deg, #f97316, #fbbf24)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}>
-              📊 Debug Overview (Mainnet) - {debugSessions.length} Sessions Analyzed
-            </h2>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+              <h2 className="text-xl lg:text-2xl font-semibold text-center lg:text-left" style={{ 
+                background: 'linear-gradient(135deg, #f97316, #fbbf24)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                margin: 0
+              }}>
+                📊 Debug Overview (Mainnet) - {debugSessions.length} Sessions Analyzed
+              </h2>
+              <button
+                onClick={() => {
+                  console.log('🔄 [AdminInterface] Refreshing debug sessions (mainnet)...');
+                  loadDebugSessions();
+                }}
+                disabled={isLoading}
+                className="px-4 py-2 rounded-lg font-medium text-sm transition-all"
+                style={{
+                  background: isLoading ? 'rgba(100, 100, 100, 0.5)' : 'rgba(255, 107, 53, 0.1)',
+                  border: '1px solid rgba(255, 107, 53, 0.3)',
+                  color: isLoading ? '#888' : '#ff6b35',
+                  cursor: isLoading ? 'not-allowed' : 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isLoading) {
+                    e.currentTarget.style.background = 'rgba(255, 107, 53, 0.2)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isLoading) {
+                    e.currentTarget.style.background = 'rgba(255, 107, 53, 0.1)';
+                  }
+                }}
+              >
+                {isLoading ? '⏳ Loading...' : '🔄 Refresh'}
+              </button>
+            </div>
             
             {/* 🔧 NEW: Generation Debug Toggle */}
             <div className="rounded-xl p-4 lg:p-6 mb-6" style={{ 
