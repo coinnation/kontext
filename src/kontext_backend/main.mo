@@ -127,6 +127,26 @@ actor Main {
     private stable var stripeWebhookSecret: Text = "";
     
     // ===============================
+    // AI MODEL API KEYS (Platform-level)
+    // ===============================
+    
+    // Claude (Anthropic) API key
+    // TODO: Set via admin function after deployment
+    private stable var claudeApiKey: Text = "";
+    
+    // OpenAI API key
+    // TODO: Set via admin function after deployment
+    private stable var openaiApiKey: Text = "";
+    
+    // Google Gemini API key
+    // TODO: Set via admin function after deployment
+    private stable var geminiApiKey: Text = "";
+    
+    // Kimi (Moonshot AI) API key
+    // TODO: Set via admin function after deployment
+    private stable var kimiApiKey: Text = "";
+    
+    // ===============================
     // SUBSCRIPTION CACHING (Phase 1: Prevent excessive Stripe API calls)
     // ===============================
     
