@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
+import { copyFileSync } from 'fs';
 
 // 🔥 SIMPLIFIED CONFIG - Aligning with JSBundler's vanilla Vite approach
 // The JSBundler just uses Vite's build() with minimal customization
@@ -12,7 +13,22 @@ export default defineConfig({
                 babelrc: false,
                 configFile: false
             }
-        })
+        }),
+        // Plugin to copy .ic-assets.json5 to dist (Vite skips dotfiles by default)
+        {
+            name: 'copy-ic-assets-config',
+            closeBundle() {
+                try {
+                    copyFileSync(
+                        resolve(__dirname, 'public/.ic-assets.json5'),
+                        resolve(__dirname, 'dist/.ic-assets.json5')
+                    );
+                    console.log('✅ Copied .ic-assets.json5 to dist/');
+                } catch (err) {
+                    console.warn('⚠️ Failed to copy .ic-assets.json5:', err);
+                }
+            }
+        }
     ],
     root: '.',
     publicDir: 'public',
