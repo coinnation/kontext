@@ -495,6 +495,95 @@ actor Main {
     };
 
     // ===============================
+    // AI MODEL API KEY MANAGEMENT
+    // ===============================
+    
+    // Update Claude API key (admin only)
+    public shared(msg) func updateClaudeApiKey(newApiKey: Text) : async Result.Result<Text, Text> {
+        if (not _isAdmin(msg.caller)) {
+            return #err("Unauthorized: Admin access required");
+        };
+        
+        if (Text.size(newApiKey) < 10) {
+            return #err("Invalid API key: Key too short");
+        };
+        
+        if (not Text.startsWith(newApiKey, #text "sk-ant-")) {
+            return #err("Invalid Claude API key: Must start with sk-ant-");
+        };
+        
+        claudeApiKey := newApiKey;
+        #ok("Claude API key updated successfully")
+    };
+    
+    // Update OpenAI API key (admin only)
+    public shared(msg) func updateOpenAIApiKey(newApiKey: Text) : async Result.Result<Text, Text> {
+        if (not _isAdmin(msg.caller)) {
+            return #err("Unauthorized: Admin access required");
+        };
+        
+        if (Text.size(newApiKey) < 10) {
+            return #err("Invalid API key: Key too short");
+        };
+        
+        if (not Text.startsWith(newApiKey, #text "sk-")) {
+            return #err("Invalid OpenAI API key: Must start with sk-");
+        };
+        
+        openaiApiKey := newApiKey;
+        #ok("OpenAI API key updated successfully")
+    };
+    
+    // Update Gemini API key (admin only)
+    public shared(msg) func updateGeminiApiKey(newApiKey: Text) : async Result.Result<Text, Text> {
+        if (not _isAdmin(msg.caller)) {
+            return #err("Unauthorized: Admin access required");
+        };
+        
+        if (Text.size(newApiKey) < 10) {
+            return #err("Invalid API key: Key too short");
+        };
+        
+        if (not Text.startsWith(newApiKey, #text "AIza")) {
+            return #err("Invalid Gemini API key: Must start with AIza");
+        };
+        
+        geminiApiKey := newApiKey;
+        #ok("Gemini API key updated successfully")
+    };
+    
+    // Update Kimi API key (admin only)
+    public shared(msg) func updateKimiApiKey(newApiKey: Text) : async Result.Result<Text, Text> {
+        if (not _isAdmin(msg.caller)) {
+            return #err("Unauthorized: Admin access required");
+        };
+        
+        if (Text.size(newApiKey) < 10) {
+            return #err("Invalid API key: Key too short");
+        };
+        
+        kimiApiKey := newApiKey;
+        #ok("Kimi API key updated successfully")
+    };
+    
+    // Get AI API keys (query - can be used by platform services)
+    public query func getClaudeApiKey() : async Text {
+        claudeApiKey
+    };
+    
+    public query func getOpenAIApiKey() : async Text {
+        openaiApiKey
+    };
+    
+    public query func getGeminiApiKey() : async Text {
+        geminiApiKey
+    };
+    
+    public query func getKimiApiKey() : async Text {
+        kimiApiKey
+    };
+
+    // ===============================
     // 🔐 SECURE STRIPE BACKEND API
     // All Stripe operations happen in canister - secret key NEVER exposed
     // ===============================
