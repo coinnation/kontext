@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 🔥 CRITICAL: Set MonacoEnvironment FIRST before ANY other scripts -->
+    <script>
+        self.MonacoEnvironment = {
+            getWorkerUrl: function (moduleId, label) {
+                return 'data:text/javascript;charset=utf-8,self.postMessage({});';
+            }
+        };
+            console.log('✅ MonacoEnvironment configured in HEAD before any modules [Build: 2025-01-08 03:55 PST - Monaco Preload Refs Fixed]');
+    </script>
+    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Kontext">
+    <title>Kontext</title>
+    <link rel="icon" type="image/x-icon" href="https://pwi5a-sqaaa-aaaaa-qcfgq-cai.raw.icp0.io/projects/project-mfvtjz8x-hc7uz/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://pwi5a-sqaaa-aaaaa-qcfgq-cai.raw.icp0.io/projects/project-mfvtjz8x-hc7uz/iosicon.png">
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- 🚀 PWA OPTIMIZATION: Resource hints for faster loading -->
+    <!-- Preconnect to external domains for faster DNS/TLS -->
+    <link rel="preconnect" href="https://icp0.io" crossorigin />
+    <link rel="preconnect" href="https://api.stripe.com" crossorigin />
+    <link rel="dns-prefetch" href="https://icp0.io" />
+    <link rel="dns-prefetch" href="https://api.stripe.com" />
+    
+    <!-- ⚡ PERFORMANCE MONITORING SCRIPT -->
+    <!-- <script>
+        window.__pageStart = performance.now();
+        console.log('%c🚀 PAGE LOAD STARTED', 'background: #222; color: #0f0; font-size: 16px; font-weight: bold;');
+        
+        new PerformanceObserver((list) => {
+            list.getEntries().forEach(entry => {
+                if (entry.name.includes('.js')) {
+                    const size = entry.transferSize ? `${(entry.transferSize/1024).toFixed(0)}KB` : 'cached';
+                    const time = entry.duration.toFixed(0);
+                    const name = entry.name.split('/').pop();
+                    
+                    const emoji = entry.name.includes('monaco') ? '🎹' : 
+                                  entry.name.includes('vendor') ? '📦' : 
+                                  entry.name.includes('service') ? '🔧' : '📜';
+                    
+                    console.log(`${emoji} ${name} - ${time}ms (${size})`);
+                    
+                    if (entry.duration > 500) {
+                        console.warn(`⚠️  SLOW: ${name} took ${time}ms`);
+                    }
+                }
+            });
+        }).observe({ entryTypes: ['resource'] });
+        
+        window.addEventListener('load', () => {
+            const total = (performance.now() - window.__pageStart).toFixed(0);
+            console.log(`\n%c🎉 PAGE LOADED: ${total}ms`, 'background: #0f0; color: #000; font-size: 14px; font-weight: bold; padding: 4px;');
+            
+            const resources = performance.getEntriesByType('resource')
+                .filter(r => r.name.includes('.js'))
+                .sort((a, b) => b.duration - a.duration)
+                .slice(0, 5);
+            
+            console.log('\n🐌 TOP 5 SLOWEST JS FILES:');
+            resources.forEach((r, i) => {
+                const name = r.name.split('/').pop();
+                const size = r.transferSize ? `${(r.transferSize/1024/1024).toFixed(2)}MB` : 'cached';
+                console.log(`${i+1}. ${name}: ${r.duration.toFixed(0)}ms (${size})`);
+            });
+            console.log('');
+        });
+    </script> -->
+    
+    <style>
+        body {
+            margin: 0;
+            background: #0a0a0a;
+        }
+        #app-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        #app-loader-logo {
+            width: 80px;
+            height: 80px;
+            background-image: url('https://pwi5a-sqaaa-aaaaa-qcfgq-cai.raw.icp0.io/projects/project-mfvtjz8x-hc7uz/KCP_LOGO.webp');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 12px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { 
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+        #app-loader-text {
+            margin-top: 24px;
+            color: #ff6b35;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-loader">
+        <div id="app-loader-logo"></div>
+        <div id="app-loader-text">Loading Kontext...</div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="./src/index.tsx"></script>
+</body>
+</html>

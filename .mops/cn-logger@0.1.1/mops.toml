@@ -1,0 +1,10 @@
+[package]
+name = "cn-logger"
+version = "0.1.1"
+description = "A comprehensive logging system for Internet Computer canisters"
+repository = "https://github.com/coinnation/cnLogger"
+keywords = ["logging", "debug", "internet-computer", "dfinity", "motoko"]
+license = "MIT"
+
+[dependencies]
+base = "0.14.9"

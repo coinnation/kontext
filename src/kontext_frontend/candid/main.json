@@ -1,0 +1,143 @@
+{
+  "type": "service",
+  "methods": {
+    "clearAllLogs": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Nat",
+      "annotations": ""
+    },
+    "createPlatformWallet": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Text",
+      "annotations": ""
+    },
+    "deleteCanister": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "finalizeWasmUpload": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "getAdminPrincipal": {
+      "type": "function",
+      "params": "void",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "getCallerPrincipal": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Text",
+      "annotations": ""
+    },
+    "getLogs": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Vec(IDL.Text)",
+      "annotations": "'query'"
+    },
+    "getPaymentHistory": {
+      "type": "function",
+      "params": "IDL.Opt(IDL.Principal)",
+      "returns": "Result_3",
+      "annotations": ""
+    },
+    "getPlatformBalance": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Nat",
+      "annotations": ""
+    },
+    "getPlatformCycleBalance": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Nat",
+      "annotations": ""
+    },
+    "getStripePublishableKey": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Text",
+      "annotations": "'query'"
+    },
+    "getStripeSecretKey": {
+      "type": "function",
+      "params": "void",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "isAdmin": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Bool",
+      "annotations": ""
+    },
+    "logDebug": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "void",
+      "annotations": ""
+    },
+    "logError": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "void",
+      "annotations": ""
+    },
+    "logInfo": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "void",
+      "annotations": ""
+    },
+    "logWarn": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "void",
+      "annotations": ""
+    },
+    "removeUserPlatformCanister": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "sendICPFromPlatform": {
+      "type": "function",
+      "params": "IDL.Principal, IDL.Nat",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "topUpCanisterCMC": {
+      "type": "function",
+      "params": "IDL.Principal, IDL.Nat",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "updateAdminPrincipal": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "updateStripeKeys": {
+      "type": "function",
+      "params": "IDL.Text, IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "verifyPayment": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result",
+      "annotations": ""
+    }
+  }
+}

@@ -1,0 +1,14 @@
+[
+    {
+        "match": "**/*",
+        "headers": {
+            "Content-Security-Policy": "default-src *; script-src * 'unsafe-inline' 'unsafe-eval'; script-src-elem * 'unsafe-inline' 'unsafe-eval'; connect-src *; worker-src * blob: data:; img-src * data: blob:; style-src * 'unsafe-inline'; style-src-elem * 'unsafe-inline'; font-src *; object-src *; base-uri *; frame-ancestors *; form-action *; frame-src * https://jsbundler.coinnation.io; media-src *; manifest-src *;",
+            "Permissions-Policy": "",
+            "X-Frame-Options": "",
+            "Referrer-Policy": "no-referrer-when-downgrade",
+            "X-Content-Type-Options": "",
+            "X-XSS-Protection": ""
+        }
+    }
+]
+

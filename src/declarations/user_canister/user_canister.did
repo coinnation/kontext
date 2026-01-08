@@ -1,0 +1,1776 @@
+type WebhookConfig = 
+ record {
+   active: bool;
+   events: vec text;
+   id: text;
+   secret: text;
+   url: text;
+ };
+type VisibilityType = 
+ variant {
+   Contacts;
+   Private;
+   Public;
+ };
+type VisibilityPreferences = 
+ record {
+   activity: Visibility;
+   profile: Visibility;
+   projects: Visibility;
+   stats: Visibility;
+ };
+type Visibility = 
+ variant {
+   Contacts;
+   Private;
+   Public;
+ };
+type VersionStatus = 
+ variant {
+   Deprecated;
+   Development;
+   Draft;
+   Released;
+ };
+type VersionArtifact = 
+ record {
+   created: nat64;
+   files: vec ArtifactFile;
+   id: text;
+   projectId: text;
+   versionId: text;
+ };
+type UserSocials = 
+ record {
+   discord: opt text;
+   openchat: opt text;
+   telegram: opt text;
+   twitter: opt text;
+ };
+type UserProfile = 
+ record {
+   avatar: opt text;
+   avatarAsset: opt ImageAsset;
+   bio: opt text;
+   coverPhoto: opt text;
+   coverPhotoAsset: opt ImageAsset;
+   displayName: opt text;
+   email: opt text;
+   github: opt text;
+   metadata: opt vec record {
+                       text;
+                       text;
+                     };
+   socials: opt UserSocials;
+   username: text;
+   website: opt text;
+ };
+type UserPreferences = 
+ record {
+   customPreferences: opt vec record {
+                                text;
+                                text;
+                              };
+   defaultProjectPreferences: opt ProjectPreferences;
+   notifications: NotificationPreferences;
+   theme: opt text;
+   visibility: VisibilityPreferences;
+ };
+type User = 
+ record {
+   created: nat64;
+   id: principal;
+   lastActive: nat64;
+   linkedAccounts: vec principal;
+   preferences: opt UserPreferences;
+   primaryAccountId: opt principal;
+   profile: UserProfile;
+ };
+type TransactionType = 
+ variant {
+   canister;
+   received;
+   sent;
+ };
+type Transaction = 
+ record {
+   amount: nat;
+   counterparty: text;
+   isPositive: bool;
+   memo: opt text;
+   timestamp: int;
+   transactionType: TransactionType;
+ };
+type Timestamp = nat64;
+type TemplateReference = 
+ record {
+   id: text;
+   name: text;
+   price: opt nat64;
+   salesCount: nat;
+   visibility: Visibility;
+ };
+type TelegramConfig = 
+ record {
+   botEnabled: bool;
+   chatId: text;
+   notificationSettings: NotificationSettings;
+ };
+type Subscription = 
+ record {
+   autoRefresh: bool;
+   billingCycleStart: Timestamp;
+   isActive: bool;
+   monthlyAllocation: nat;
+   tier: text;
+ };
+type StreamingStrategy = variant {
+                           Callback:
+                            record {
+                              callback:
+                               func (StreamingCallbackToken) ->
+                                (StreamingCallbackResponse) query;
+                              token: StreamingCallbackToken;
+                            };};
+type StreamingCallbackToken = 
+ record {
+   chunkIndex: nat;
+   exportId: text;
+   tokenId: text;
+ };
+type StreamingCallbackResponse = 
+ record {
+   body: blob;
+   token: opt StreamingCallbackToken;
+ };
+type StoredFile = 
+ record {
+   category: opt text;
+   checksum: text;
+   created: nat64;
+   description: opt text;
+   fileName: text;
+   fileSize: nat;
+   id: text;
+   isChunked: bool;
+   mimeType: text;
+   projectId: text;
+   tags: vec text;
+   totalChunks: opt nat;
+   updated: nat64;
+   uploadedBy: principal;
+   visibility: FileVisibility;
+ };
+type SocialLinks = 
+ record {
+   custom: vec record {
+                 text;
+                 text;
+               };
+   discord: opt text;
+   github: opt text;
+   linkedin: opt text;
+   medium: opt text;
+   telegram: opt text;
+   twitter: opt text;
+   youtube: opt text;
+ };
+type ServerPair = 
+ record {
+   backendCanisterId: principal;
+   createdAt: nat64;
+   creditsAllocated: nat;
+   frontendCanisterId: principal;
+   name: text;
+   pairId: text;
+ };
+type SemanticVersion = 
+ record {
+   build: opt text;
+   major: nat;
+   minor: nat;
+   patch: nat;
+   prerelease: opt text;
+ };
+type SecurityResult = 
+ variant {
+   Blocked: text;
+   Failure: text;
+   Success;
+ };
+type SecurityAuditLog = 
+ record {
+   action: SecurityAction;
+   metadata: vec record {
+                   text;
+                   text;
+                 };
+   resourceId: text;
+   resourceType: text;
+   result: SecurityResult;
+   timestamp: nat64;
+   userId: principal;
+ };
+type SecurityAction = 
+ variant {
+   APIKeyUsed;
+   CredentialAccessed;
+   CredentialCreated;
+   CredentialDeleted;
+   CredentialRotated;
+   CredentialUpdated;
+   Custom: text;
+   EnvironmentVariableAccessed;
+   PermissionChanged;
+   TokenRefreshed;
+   UnauthorizedAccess;
+ };
+type RoleType = 
+ variant {
+   Contributor;
+   Custom: text;
+   Developer;
+   Reviewer;
+ };
+type Result_9 = 
+ variant {
+   err: text;
+   ok: CodeArtifact;
+ };
+type Result_8 = 
+ variant {
+   err: text;
+   ok: MarketplaceListing;
+ };
+type Result_7 = 
+ variant {
+   err: text;
+   ok: text;
+ };
+type Result_6 = 
+ variant {
+   err: text;
+   ok: bool;
+ };
+type Result_51 = 
+ variant {
+   err: text;
+   ok: record {
+         linkId: text;
+         token: text;
+         url: text;
+       };
+ };
+type Result_50 = 
+ variant {
+   err: text;
+   ok: record {
+         content: vec nat8;
+         mimeType: text;
+         size: nat;
+       };
+ };
+type Result_5 = 
+ variant {
+   err: text;
+   ok: User;
+ };
+type Result_49 = 
+ variant {
+   err: text;
+   ok: record {
+         files: vec CodeArtifact;
+         isLastBatch: bool;
+       };
+ };
+type Result_48 = 
+ variant {
+   err: text;
+   ok: vec nat8;
+ };
+type Result_47 = 
+ variant {
+   err: text;
+   ok: ProjectExport;
+ };
+type Result_46 = 
+ variant {
+   err: text;
+   ok: DownloadToken;
+ };
+type Result_45 = 
+ variant {
+   err: text;
+   ok: APICredential;
+ };
+type Result_44 = 
+ variant {
+   err: text;
+   ok: vec APIEndpoint;
+ };
+type Result_43 = 
+ variant {
+   err: text;
+   ok: principal;
+ };
+type Result_42 = 
+ variant {
+   err: text;
+   ok: AgentCredentials;
+ };
+type Result_41 = 
+ variant {
+   err: text;
+   ok: vec APICredential;
+ };
+type Result_40 = 
+ variant {
+   err: text;
+   ok: vec AgentCredentials;
+ };
+type Result_4 = 
+ variant {
+   err: text;
+   ok;
+ };
+type Result_39 = 
+ variant {
+   err: text;
+   ok: vec DatabaseCredential;
+ };
+type Result_38 = 
+ variant {
+   err: text;
+   ok:
+    record {
+      apiEndpoints: vec APIEndpoint;
+      codeRules: vec CodeRule;
+      codeTemplates: vec CodeTemplate;
+      colorPalettes: vec ColorPalette;
+      designInspirations: vec DesignInspiration;
+      documentationItems: vec DocumentationItem;
+      gitHubGuidelines: vec GitHubGuideline;
+      references: vec ReferenceItem;
+    };
+ };
+type Result_37 = 
+ variant {
+   err: text;
+   ok: nat;
+ };
+type Result_36 = 
+ variant {
+   err: text;
+   ok: vec CodeRule;
+ };
+type Result_35 = 
+ variant {
+   err: text;
+   ok: vec CodeTemplate;
+ };
+type Result_34 = 
+ variant {
+   err: text;
+   ok: vec ColorPalette;
+ };
+type Result_33 = 
+ variant {
+   err: text;
+   ok: DatabaseCredential;
+ };
+type Result_32 = 
+ variant {
+   err: text;
+   ok:
+    record {
+      hasBackendChanged: bool;
+      hasFrontendChanged: bool;
+      lastBackendDeployment: opt nat64;
+      lastDeploymentServerPairId: opt text;
+      lastFrontendDeployment: opt nat64;
+    };
+ };
+type Result_31 = 
+ variant {
+   err: text;
+   ok: vec DesignInspiration;
+ };
+type Result_30 = 
+ variant {
+   err: text;
+   ok: vec DocumentationItem;
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: ProjectVersion;
+ };
+type Result_29 = 
+ variant {
+   err: text;
+   ok: EnvironmentConfig;
+ };
+type Result_28 = 
+ variant {
+   err: text;
+   ok: vec EnvironmentConfig;
+ };
+type Result_27 = 
+ variant {
+   err: text;
+   ok: vec GitHubGuideline;
+ };
+type Result_26 = 
+ variant {
+   err: text;
+   ok: Project;
+ };
+type Result_25 = 
+ variant {
+   err: text;
+   ok: vec DeployedAgent;
+ };
+type Result_24 = 
+ variant {
+   err: text;
+   ok: vec FileMetadata;
+ };
+type Result_23 = 
+ variant {
+   err: text;
+   ok: FileTreeNode;
+ };
+type Result_22 = 
+ variant {
+   err: text;
+   ok: vec CodeArtifact;
+ };
+type Result_21 = 
+ variant {
+   err: text;
+   ok: vec ChatMessage;
+ };
+type Result_20 = 
+ variant {
+   err: text;
+   ok: ProjectMetadata;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: record {
+         completed: bool;
+         progress: nat;
+       };
+ };
+type Result_19 = 
+ variant {
+   err: text;
+   ok: vec ServerPair;
+ };
+type Result_18 = 
+ variant {
+   err: text;
+   ok:
+    record {
+      averageFileSize: nat;
+      binaryFiles: nat;
+      largeFiles: nat;
+      recommendedBatchSize: nat;
+      textFiles: nat;
+      totalEstimatedSize: nat;
+      totalFiles: nat;
+    };
+ };
+type Result_17 = 
+ variant {
+   err: text;
+   ok: vec ProjectVersion;
+ };
+type Result_16 = 
+ variant {
+   err: text;
+   ok: vec ReferenceItem;
+ };
+type Result_15 = 
+ variant {
+   err: text;
+   ok: vec SecurityAuditLog;
+ };
+type Result_14 = 
+ variant {
+   err: text;
+   ok: ArtifactFile;
+ };
+type Result_13 = 
+ variant {
+   err: text;
+   ok: VersionArtifact;
+ };
+type Result_12 = 
+ variant {
+   err: text;
+   ok:
+    record {
+      batchSize: nat;
+      sessionId: text;
+      totalBatches: nat;
+      totalFiles: nat;
+    };
+ };
+type Result_11 = 
+ variant {
+   err: text;
+   ok:
+    record {
+      chunkSize: nat;
+      sessionId: text;
+      totalChunks: nat;
+      totalSize: nat;
+    };
+ };
+type Result_10 = 
+ variant {
+   err: text;
+   ok: Account;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: StoredFile;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: record {
+         receivedChunks: nat;
+         totalChunks: nat;
+       };
+ };
+type ReferenceItem = 
+ record {
+   category: opt text;
+   content: text;
+   createdAt: nat64;
+   id: text;
+   title: text;
+ };
+type RateLimit = 
+ record {
+   requestsPerDay: nat;
+   requestsPerMinute: nat;
+   tokensPerDay: opt nat;
+   tokensPerMinute: opt nat;
+ };
+type PublicProfileStats = 
+ record {
+   joinedDate: Timestamp;
+   marketplaceListings: nat;
+   profileViews: nat;
+   totalDeployments: nat;
+   totalProjects: nat;
+ };
+type PublicProfile = 
+ record {
+   avatarUrl: opt text;
+   bannerUrl: opt text;
+   bio: opt text;
+   company: opt text;
+   createdAt: Timestamp;
+   customSections: vec CustomSection;
+   displayName: opt text;
+   email: opt text;
+   featuredProjects: vec text;
+   interests: vec text;
+   isPublic: bool;
+   location: opt text;
+   profileViews: nat;
+   showMarketplace: bool;
+   showStats: bool;
+   skills: vec text;
+   socialLinks: SocialLinks;
+   tagline: opt text;
+   theme: opt ProfileTheme;
+   timezone: opt text;
+   title: opt text;
+   updatedAt: Timestamp;
+   website: opt text;
+ };
+type ProjectVersion = 
+ record {
+   artifactSnapshot: opt text;
+   canisters: vec principal;
+   created: nat64;
+   deployments: opt vec DeploymentReference;
+   description: opt text;
+   id: text;
+   motokoPackages: opt vec PackageInfo;
+   name: text;
+   npmPackages: opt vec NPMPackageInfo;
+   parentVersion: opt text;
+   projectId: text;
+   releaseNotes: opt text;
+   semanticVersion: SemanticVersion;
+   status: VersionStatus;
+   tags: vec text;
+ };
+type ProjectType__1 = 
+ record {
+   name: text;
+   subType: text;
+ };
+type ProjectType = 
+ record {
+   category: ProjectCategory;
+   framework: ProjectFramework;
+ };
+type ProjectReference = 
+ record {
+   id: text;
+   lastModified: Timestamp;
+   name: text;
+   visibility: Visibility;
+ };
+type ProjectPreferences = 
+ record {
+   accessPreferences: opt AccessControlPreferences;
+   buildPreferences: opt BuildPreferences;
+   defaultPreferences: opt vec record {
+                                 text;
+                                 text;
+                               };
+   deploymentPreferences: opt DeploymentPreferences;
+   projectType: ProjectType;
+   visibility: VisibilityType;
+ };
+type ProjectMetadata = 
+ record {
+   category: opt text;
+   completionStatus: opt text;
+   customColor: opt text;
+   customIcon: opt text;
+   difficultyLevel: opt text;
+   estimatedSize: opt nat;
+   externalLinks: opt vec record {
+                            text;
+                            text;
+                          };
+   fileCount: opt nat;
+   isBookmarked: opt bool;
+   lastAccessed: opt nat64;
+   learningObjectives: opt vec text;
+   notes: opt text;
+   priority: opt text;
+   tags: vec text;
+   thumbnailUrl: opt text;
+ };
+type ProjectFramework = 
+ variant {
+   Custom: text;
+   Motoko;
+   React;
+   Vue;
+ };
+type ProjectExport = 
+ record {
+   checksum: text;
+   compressionType: text;
+   createdAt: nat64;
+   expiresAt: opt nat64;
+   exportId: text;
+   fileName: text;
+   fileSize: nat;
+   isChunked: bool;
+   metadata: ExportMetadata;
+   projectId: text;
+   totalChunks: opt nat;
+ };
+type ProjectCategory = 
+ variant {
+   Backend;
+   Frontend;
+   FullStack;
+ };
+type Project = 
+ record {
+   canisters: vec principal;
+   collaborators: opt vec principal;
+   created: nat64;
+   deployedAgents: opt vec DeployedAgent;
+   description: opt text;
+   hasBackendChanged: opt bool;
+   hasFrontendChanged: opt bool;
+   id: text;
+   lastBackendDeployment: opt nat64;
+   lastDeploymentServerPairId: opt text;
+   lastFrontendDeployment: opt nat64;
+   lastMessageTime: opt nat64;
+   messageCount: opt nat;
+   messages: opt vec ChatMessage;
+   metadata: opt ProjectMetadata;
+   motokoPackages: opt vec PackageInfo;
+   name: text;
+   npmPackages: opt vec NPMPackageInfo;
+   projectType: ProjectType__1;
+   status: text;
+   templateId: opt text;
+   updated: nat64;
+   visibility: text;
+   workingCopyBaseVersion: opt text;
+ };
+type ProfileTheme = 
+ record {
+   accentColor: text;
+   backgroundStyle: BackgroundStyle;
+   primaryColor: text;
+ };
+type PackageInfo = 
+ record {
+   dir: opt vec text;
+   homepage: opt vec text;
+   name: text;
+   repo: text;
+   version: text;
+ };
+type NotificationSettings = 
+ record {
+   customSettings: opt vec record {
+                             text;
+                             text;
+                           };
+   enabled: bool;
+   eventTypes: vec text;
+   frequency: opt text;
+   muteTimeEnd: opt nat64;
+   muteTimeStart: opt nat64;
+ };
+type NotificationPreferences = 
+ record {
+   channelPreferences:
+    record {
+      discord: bool;
+      email: bool;
+      inApp: bool;
+      telegram: bool;
+    };
+   digestFrequency: opt text;
+   notificationTypes: opt vec record {
+                                text;
+                                bool;
+                              };
+ };
+type NPMPackageInfo = 
+ record {
+   dependencyType: text;
+   name: text;
+   version: text;
+ };
+type Metadata = 
+ record {
+   balance: nat;
+   cycleBalance: nat64;
+   heapMemoryUsage: nat64;
+   idleCyclesBurnedPerDay: nat;
+   lastUpdated: nat64;
+   memorySize: nat;
+   memoryUsage: nat64;
+   moduleHash: opt vec nat8;
+   stableMemoryUsage: nat;
+   stableStateSize: nat;
+   totalKeys: nat;
+   totalUsers: nat;
+   uptime: nat64;
+   version: text;
+ };
+type MarketplaceListing = 
+ record {
+   category: text;
+   demoUrl: opt text;
+   description: text;
+   downloadCount: nat;
+   forSale: bool;
+   isPublished: bool;
+   listedAt: nat64;
+   previewImages: vec text;
+   price: nat;
+   projectId: text;
+   stripeAccountId: text;
+   tags: vec text;
+   title: text;
+   updatedAt: nat64;
+   version: text;
+ };
+type LoggerConfig = 
+ record {
+   maxSize: nat;
+   retentionDays: nat;
+ };
+type LLMCredentials = 
+ record {
+   apiKey: text;
+   endpoint: opt text;
+   maxTokens: opt nat;
+   model: opt text;
+   organizationId: opt text;
+   projectId: opt text;
+   rateLimit: opt RateLimit;
+   temperature: opt float64;
+ };
+type ImageAsset = 
+ record {
+   data: blob;
+   height: opt nat;
+   mimeType: text;
+   name: text;
+   sizeBytes: nat;
+   uploadedAt: nat64;
+   width: opt nat;
+ };
+type HttpResponse = 
+ record {
+   body: blob;
+   headers: vec HeaderField;
+   status_code: nat16;
+   streaming_strategy: opt StreamingStrategy;
+ };
+type HttpRequest = 
+ record {
+   body: blob;
+   headers: vec HeaderField;
+   method: text;
+   url: text;
+ };
+type HeaderField = 
+ record {
+   text;
+   text;
+ };
+type GitHubGuideline = 
+ record {
+   createdAt: nat64;
+   guideline: text;
+   id: text;
+   title: text;
+ };
+type GitHubConfig = 
+ record {
+   accessToken: text;
+   connectedRepositories: vec text;
+   tokenExpiry: Timestamp;
+   webhookConfigs: vec WebhookConfig;
+ };
+type FileVisibility = 
+ variant {
+   private;
+   projectTeam;
+   public;
+ };
+type FileTreeNode = 
+ record {
+   children: opt vec FileTreeNode;
+   isDirectory: bool;
+   name: text;
+   path: text;
+ };
+type FileShareLink = 
+ record {
+   createdAt: nat64;
+   createdBy: principal;
+   downloadCount: nat;
+   expiresAt: opt nat64;
+   fileId: text;
+   isRevoked: bool;
+   linkId: text;
+   maxDownloads: opt nat;
+   revokedAt: opt nat64;
+   token: text;
+ };
+type FileMetadata = 
+ record {
+   chunkCount: opt nat;
+   fileName: text;
+   id: text;
+   isChunked: bool;
+   language: text;
+   lastModified: int;
+   mimeType: text;
+   path: text;
+   projectId: text;
+   size: nat;
+   version: nat;
+ };
+type FileData = 
+ record {
+   content: FileContent;
+   fileName: text;
+   language: text;
+   mimeType: text;
+   path: text;
+ };
+type FileContent = 
+ variant {
+   Binary: vec nat8;
+   Text: text;
+ };
+type ExternalServiceTokens = 
+ record {
+   discord: opt DiscordConfig;
+   github: opt GitHubConfig;
+   telegram: opt TelegramConfig;
+ };
+type ExportMetadata = 
+ record {
+   exportedBy: principal;
+   fileCount: nat;
+   motokoPackages: opt vec PackageInfo;
+   npmPackages: opt vec NPMPackageInfo;
+   projectName: text;
+   projectType: ProjectType__1;
+ };
+type EnvironmentConfig = 
+ record {
+   agentId: opt text;
+   createdAt: nat64;
+   environment: Environment;
+   id: text;
+   name: text;
+   projectId: opt text;
+   updatedAt: nat64;
+   variables: vec EnvVariable;
+ };
+type Environment = 
+ variant {
+   Custom: text;
+   Development;
+   Production;
+   Staging;
+   Testing;
+ };
+type EnvVariable = 
+ record {
+   category: opt text;
+   createdAt: nat64;
+   description: opt text;
+   encryptedValue: text;
+   isRequired: bool;
+   isSecret: bool;
+   key: text;
+ };
+type DownloadToken = 
+ record {
+   buyer: principal;
+   createdAt: nat64;
+   downloadCount: nat;
+   expiresAt: nat64;
+   exportId: text;
+   isRevoked: bool;
+   lastUsedAt: opt nat64;
+   maxDownloads: nat;
+   projectId: text;
+   purchaseId: text;
+   revokedAt: opt nat64;
+   revokedReason: opt text;
+   tokenId: text;
+ };
+type DownloadLog = 
+ record {
+   buyer: principal;
+   downloadedAt: nat64;
+   errorMessage: opt text;
+   exportId: text;
+   ipAddress: opt text;
+   success: bool;
+   tokenId: text;
+   userAgent: opt text;
+ };
+type DocumentationItem = 
+ record {
+   category: opt text;
+   content: text;
+   createdAt: nat64;
+   id: text;
+   title: text;
+ };
+type DiscordConfig = 
+ record {
+   channelId: text;
+   notificationSettings: NotificationSettings;
+   serverId: text;
+   webhookUrl: text;
+ };
+type DesignInspiration = 
+ record {
+   createdAt: nat64;
+   id: text;
+   imageUrl: opt text;
+   notes: opt text;
+   title: text;
+   url: opt text;
+ };
+type DeploymentReference__1 = 
+ record {
+   canisterId: opt principal;
+   id: text;
+   lastUpdated: Timestamp;
+   name: text;
+   network: text;
+   projectId: text;
+   status: text;
+ };
+type DeploymentReference = 
+ record {
+   canisterId: opt principal;
+   id: text;
+   lastUpdated: nat64;
+   name: text;
+   network: text;
+   projectId: text;
+   status: text;
+ };
+type DeploymentPreferences = 
+ record {
+   automaticDeployment: bool;
+   cyclesRequirement: nat64;
+   network: text;
+   replica: text;
+ };
+type DeployedAgent = 
+ record {
+   agentType: opt text;
+   backendCanisterId: opt principal;
+   createdAt: nat64;
+   description: opt text;
+   frontendCanisterId: opt principal;
+   id: text;
+   lastDeployedAt: opt nat64;
+   name: text;
+   status: text;
+ };
+type DatabaseCredential = 
+ record {
+   allowedOperations: vec text;
+   connectionString: opt text;
+   createdAt: nat64;
+   database: text;
+   dbType: text;
+   encryptedPassword: text;
+   host: text;
+   id: text;
+   isReadOnly: bool;
+   name: text;
+   port: nat;
+   sslCertificate: opt text;
+   sslEnabled: bool;
+   username: text;
+ };
+type CustomSection = 
+ record {
+   content: text;
+   icon: text;
+   id: text;
+   isVisible: bool;
+   order: nat;
+   title: text;
+ };
+type CredentialType = 
+ variant {
+   APIKey;
+   BasicAuth;
+   Certificate;
+   Custom: text;
+   JWT;
+   OAuth2;
+   SSHKey;
+ };
+type ColorPalette = 
+ record {
+   colors: vec text;
+   createdAt: nat64;
+   id: text;
+   name: text;
+ };
+type CollaboratorStatus = 
+ variant {
+   Active;
+   Invited;
+   Removed;
+ };
+type Collaborator = 
+ record {
+   addedAt: Timestamp;
+   expiresAt: opt Timestamp;
+   permissions: vec text;
+   "principal": principal;
+   role: RoleType;
+   status: CollaboratorStatus;
+ };
+type CodeTemplate = 
+ record {
+   code: text;
+   createdAt: nat64;
+   description: opt text;
+   id: text;
+   language: text;
+   name: text;
+ };
+type CodeRule = 
+ record {
+   createdAt: nat64;
+   examples: vec text;
+   id: text;
+   rule: text;
+   title: text;
+ };
+type CodeArtifact = 
+ record {
+   chunks: opt vec record {
+                     ChunkId;
+                     nat;
+                   };
+   content: opt FileContent;
+   fileName: text;
+   id: text;
+   language: text;
+   lastModified: int;
+   mimeType: text;
+   path: text;
+   projectId: text;
+   size: nat;
+   version: nat;
+ };
+type ChunkId = nat;
+type Chunk = 
+ record {
+   content: vec nat8;
+   id: ChunkId;
+   size: nat;
+ };
+type ChatMessageType = 
+ variant {
+   Assistant;
+   System;
+   User;
+ };
+type ChatMessage = 
+ record {
+   content: text;
+   id: text;
+   isGenerating: opt bool;
+   messageType: ChatMessageType;
+   metadata: opt vec record {
+                       text;
+                       text;
+                     };
+   timestamp: nat64;
+ };
+type CanisterType = 
+ variant {
+   Asset;
+   Backend;
+   Custom: text;
+   Frontend;
+ };
+type CanisterSettings = 
+ record {
+   canisterType: CanisterType;
+   computeAllocation: nat;
+   controllers: vec principal;
+   duration: opt nat;
+   freezingThreshold: nat;
+   initialCycles: nat64;
+   memoryAllocation: nat;
+   name: text;
+ };
+type CanisterMetadata = 
+ record {
+   canisterType: text;
+   didInterface: opt text;
+   name: text;
+   project: opt text;
+   stableInterface: opt text;
+   subType: opt text;
+ };
+type BuildPreferences = 
+ record {
+   artifacts: vec text;
+   commands: vec text;
+   environment: text;
+   variables: vec record {
+                    text;
+                    text;
+                  };
+ };
+type BackgroundStyle = 
+ variant {
+   Default;
+   Gradient: record {
+               text;
+               text;
+             };
+   Image: text;
+   Solid: text;
+ };
+type ArtifactFile = 
+ record {
+   content: ArtifactContent;
+   fileName: text;
+   language: text;
+   lastModified: nat64;
+   mimeType: text;
+   path: text;
+ };
+type ArtifactContent = 
+ variant {
+   Binary: vec nat8;
+   ChunkReference: vec record {
+                         nat;
+                         nat;
+                       };
+   Reference: text;
+   Text: text;
+ };
+type AgentCredentials = 
+ record {
+   agentId: text;
+   anthropic: opt LLMCredentials;
+   createdAt: nat64;
+   customAPIs: vec APICredential;
+   databases: vec DatabaseCredential;
+   environmentVariables: vec record {
+                               text;
+                               text;
+                             };
+   gemini: opt LLMCredentials;
+   kimi: opt LLMCredentials;
+   openai: opt LLMCredentials;
+   projectId: opt text;
+   updatedAt: nat64;
+ };
+type ActivityLog = 
+ record {
+   activityType: text;
+   details: opt vec record {
+                      text;
+                      text;
+                    };
+   timestamp: Timestamp;
+ };
+type AccountType = 
+ variant {
+   Basic;
+   Custom: text;
+   Enterprise;
+   Premium;
+ };
+type AccountStats = 
+ record {
+   activity: vec ActivityLog;
+   aiCreditsAllocated: nat;
+   aiCreditsBalance: nat;
+   aiCreditsUsed: nat;
+   billingCycleEnd: opt nat64;
+   cyclesBalance: nat64;
+   lastAICreditsRefresh: Timestamp;
+   lastActive: Timestamp;
+   monthlyAIUsage: nat;
+   projectsCreated: nat;
+   reputation: nat;
+   storageUsed: nat64;
+   stripeCustomerId: opt text;
+   subscriptionActive: bool;
+   subscriptionTier: text;
+   templatesPublished: nat;
+   templatesSold: nat;
+   totalRevenue: nat64;
+ };
+type AccountResources = 
+ record {
+   deployments: vec DeploymentReference__1;
+   projects: vec ProjectReference;
+   templates: vec TemplateReference;
+ };
+type AccountPreferences = 
+ record {
+   customPreferences: opt vec record {
+                                text;
+                                text;
+                              };
+   defaultProjectPreferences: opt ProjectPreferences;
+   defaultVisibility: Visibility;
+   notificationPreferences: NotificationPreferences;
+   sessionTimeout: opt nat64;
+   timezone: opt text;
+ };
+type AccountInfo = 
+ record {
+   accountType: AccountType;
+   canisterSettings: opt CanisterSettings;
+   createdAt: Timestamp;
+   externalServices: opt ExternalServiceTokens;
+   firstLoginAt: opt Timestamp;
+   hasCompletedOnboarding: bool;
+   lastAccessed: Timestamp;
+   preferences: opt AccountPreferences;
+ };
+type Account = 
+ record {
+   accountInfo: AccountInfo;
+   collaborators: vec Collaborator;
+   created: Timestamp;
+   id: principal;
+   owner: principal;
+   resources: AccountResources;
+   stats: AccountStats;
+ };
+type AccessControlPreferences = 
+ record {
+   allowedRoles: vec text;
+   allowedUsers: vec principal;
+   restrictedActions: vec record {
+                            text;
+                            vec text;
+                          };
+   visibility: text;
+ };
+type APIEndpoint = 
+ record {
+   body: opt text;
+   createdAt: nat64;
+   description: opt text;
+   headers: vec record {
+                  text;
+                  text;
+                };
+   id: text;
+   method: text;
+   name: text;
+   url: text;
+ };
+type APICredential = 
+ record {
+   createdAt: nat64;
+   credentialType: CredentialType;
+   encryptedToken: text;
+   id: text;
+   isActive: bool;
+   lastUsed: opt nat64;
+   metadata: vec record {
+                   text;
+                   text;
+                 };
+   name: text;
+   projectIds: vec text;
+   scopes: vec text;
+   "service": text;
+   tokenExpiry: opt nat64;
+   usageCount: nat;
+ };
+type AIUsageRecord = 
+ record {
+   creditsDeducted: nat;
+   inputTokens: nat;
+   model: text;
+   operation: text;
+   outputTokens: nat;
+   projectId: text;
+   timestamp: Timestamp;
+   tokensUsed: nat;
+ };
+service : {
+  addAPICredential: (credential: APICredential) -> (Result_4);
+  addAPIEndpoint: (endpoint: APIEndpoint) -> (Result_4);
+  addAgentCredentials: (credentials: AgentCredentials) -> (Result_4);
+  addCanisterMetadata: (canisterId: principal, metadata: CanisterMetadata) ->
+   ();
+  addCanisterToProject: (projectId: text, canisterId: principal, versionId:
+   opt text) -> (Result_7);
+  addCodeRule: (rule: CodeRule) -> (Result_4);
+  addCodeTemplate: (template: CodeTemplate) -> (Result_4);
+  addCollaborator: (principalId: principal, role: RoleType, permissions:
+   vec text, expiresAt: opt Timestamp) -> (Result_4);
+  addColorPalette: (palette: ColorPalette) -> (Result_4);
+  addDatabaseCredential: (credential: DatabaseCredential) -> (Result_4);
+  addDeployedAgentToProject: (projectId: text, agent: DeployedAgent) ->
+   (Result_4);
+  addDeploymentToAccount: (id: text, name: text, projectId: text, canisterId:
+   opt principal, status: text, network: text) -> (Result_4);
+  addDeploymentToVersion: (versionId: text, deployment:
+   DeploymentReference) -> (Result_3);
+  addDesignInspiration: (inspiration: DesignInspiration) -> (Result_4);
+  addDocumentationItem: (doc: DocumentationItem) -> (Result_4);
+  addEnvironmentConfig: (config: EnvironmentConfig) -> (Result_4);
+  addExternalService: (serviceType: text, config: vec record {
+                                                        text;
+                                                        text;
+                                                      }) -> (Result_4);
+  addGitHubGuideline: (guideline: GitHubGuideline) -> (Result_4);
+  addGitHubWebhook: (url: text, secret: text, events: vec text) -> (Result_7);
+  addMessageToProject: (projectId: text, messageContent: text, messageType:
+   ChatMessageType, messageId: opt text) -> (Result_7);
+  addNpmPackageToProject: (projectId: text, package: NPMPackageInfo) ->
+   (Result_7);
+  addPackageToProject: (projectId: text, package: PackageInfo, versionId:
+   opt text) -> (Result_7);
+  addProjectToAccount: (id: text, name: text, visibility: Visibility) ->
+   (Result_4);
+  addReferenceItem: (item: ReferenceItem) -> (Result_4);
+  cleanOldLogs: () -> ();
+  cleanupExpiredSessions: () -> () oneway;
+  cleanupProjectFilesDownloadSession: (sessionId: text) -> (Result_7);
+  cleanupWasmDownloadSession: (sessionId: text) -> (Result_7);
+  clearAllLogs: () -> (nat);
+  clearBackendChangedFlag: (projectId: text) -> (Result_4);
+  clearFrontendChangedFlag: (projectId: text) -> (Result_4);
+  clearProjectMessages: (projectId: text) -> (Result_4);
+  completeFileUpload: (sessionId: text, visibility: FileVisibility, tags:
+   vec text, description: opt text, category: opt text) -> (Result_1);
+  completeOnboarding: () -> (Result_6);
+  completeSubscriptionSetup: (customerId: text, subscriptionActive: bool,
+   billingCycleEnd: nat64, tier: text, monthlyAllocation: nat) -> (Result_4);
+  copyVersionArtifacts: (sourceVersionId: text, targetVersionId: text) ->
+   (Result_3);
+  createCanisterWithSettings: (userPrincipal: principal, memoryGB: nat,
+   computeAllocation: nat, freezingThreshold: opt nat, durationInDays: 
+   nat, cyclesAmount: nat, name: text, canisterType: text) -> (Result_7);
+  createCodeArtifact: (userPrincipal: principal, projectId: text, fileName:
+   text, content: FileContent, mimeType: text, language: text, path: 
+   text, versionId: opt text) -> (Result_9);
+  createCodeArtifactForVersion: (userPrincipal: principal, versionId: 
+   text, fileName: text, content: FileContent, mimeType: text, language:
+   text, path: text) -> (Result_14);
+  createFileShareLink: (fileId: text, expiresInSeconds: opt nat,
+   maxDownloads: opt nat) -> (Result_51);
+  createMarketplaceListing: (projectId: text, price: nat, stripeAccountId:
+   text, title: text, description: text, previewImages: vec text, demoUrl:
+   opt text, category: text, tags: vec text, version: text) -> (Result_8);
+  createMultipleCodeArtifacts: (userPrincipal: principal, projectId: 
+   text, files: vec FileData, versionId: opt text) -> (Result_22);
+  createProject: (project: Project, initializeVersion: opt bool) ->
+   (Result_7);
+  createProjectVersion: (projectId: text, major: nat, minor: nat, patch: 
+   nat, prerelease: opt text, build: opt text, description: opt text,
+   releaseNotes: opt text, parentVersionId: opt text) -> (Result_3);
+  createServerPair: (projectId: text, name: text, frontendCanisterId:
+   principal, backendCanisterId: principal, creditsAllocated: nat) ->
+   (Result_7);
+  createUserWallet: () -> (text);
+  createVersionArtifacts: (versionId: text, files: vec ArtifactFile) ->
+   (Result_13);
+  deductAICredits: (projectId: text, inputTokens: nat, outputTokens: 
+   nat, model: text, operation: text) -> (Result_37);
+  deleteAPICredential: (credentialId: text) -> (Result_4);
+  deleteAPIEndpoint: (id: text) -> (Result_4);
+  deleteAgentCredentials: (agentId: text) -> (Result_4);
+  deleteCanister: (canisterId: principal) -> (Result_7);
+  deleteCodeArtifact: (userPrincipal: principal, projectId: text, path: 
+   text, fileName: text, versionId: opt text) -> (Result_7);
+  deleteCodeRule: (id: text) -> (Result_4);
+  deleteCodeTemplate: (id: text) -> (Result_4);
+  deleteColorPalette: (id: text) -> (Result_4);
+  deleteDatabaseCredential: (credentialId: text) -> (Result_4);
+  deleteDeployment: (deploymentId: text, versionId: opt text) -> (Result_7);
+  deleteDesignInspiration: (id: text) -> (Result_4);
+  deleteDocumentationItem: (id: text) -> (Result_4);
+  deleteEnvironmentConfig: (configId: text) -> (Result_4);
+  deleteGitHubGuideline: (id: text) -> (Result_4);
+  deleteMarketplaceListing: (projectId: text) -> (Result_4);
+  deleteProject: (projectId: text) -> (Result_7);
+  deleteProjectExport: (exportId: text) -> (Result_4);
+  deleteProjectFile: (fileId: text) -> (Result_4);
+  deleteProjectFromAccount: (id: text) -> (Result_4);
+  deleteProjectVersion: (versionId: text) -> (Result_4);
+  deleteReferenceItem: (id: text) -> (Result_4);
+  deleteServerPair: (pairId: text) -> (Result_4);
+  deployStoredWasm: (projectId: text, fileName: text, canisterId: principal,
+   canisterType: text, deploymentStage: text, userPrincipal: principal,
+   metadata: opt CanisterMetadata, versionId: opt text, installMode:
+   opt text) -> (Result_7);
+  deployToExistingCanister: (canisterId: principal, wasm: vec nat8,
+   canisterType: text, deploymentStage: text, userPrincipal: principal,
+   metadata: opt CanisterMetadata, versionId: opt text, installMode:
+   opt text) -> (Result_7);
+  downloadLargeFileIndividually: (userPrincipal: principal, projectId: 
+   text, filePath: text, fileName: text, versionId: opt text) -> (Result_50);
+  downloadProjectFilesBatch: (sessionId: text, batchIndex: nat) ->
+   (Result_49);
+  downloadWasmChunk: (sessionId: text, chunkIndex: nat) -> (Result_48);
+  exportProject: (projectId: text) -> (Result_47);
+  finalizeWasmUpload: (sessionId: text) -> (Result_7);
+  generateDownloadToken: (exportId: text, projectId: text, purchaseId: 
+   text, buyer: principal) -> (Result_46);
+  getAICreditsBalance: () -> (nat) query;
+  getAIUsageHistory: (limit: opt nat) -> (vec AIUsageRecord) query;
+  getAIUsageThisMonth: () -> (nat) query;
+  getAPICredential: (credentialId: text) -> (Result_45);
+  getAPIEndpoints: () -> (Result_44);
+  getAccountDetails: () -> (opt Account) query;
+  getAccountIdByUsername: (username: text) -> (Result_43);
+  getAgentCredentials: (agentId: text) -> (Result_42);
+  getAllAPICredentials: () -> (Result_41);
+  getAllAgentCredentials: () -> (Result_40);
+  getAllDatabaseCredentials: () -> (Result_39);
+  getAllEnvironmentConfigs: () -> (Result_28);
+  getAllUserContext: () -> (Result_38);
+  getBillingCycleEnd: () -> (opt nat64) query;
+  getCanisterBalance: (canisterId: principal) -> (Result_37);
+  getCanisterMetadata: (canisterId: principal) -> (opt CanisterMetadata);
+  getCanisterStatus: (canisterId: principal) -> (Result_7);
+  getChunk: (chunkId: ChunkId) -> (opt Chunk);
+  getChunksBatch: (chunkIds: vec nat) -> (vec record {
+                                                nat;
+                                                opt Chunk;
+                                              });
+  getCodeRules: () -> (Result_36);
+  getCodeTemplates: () -> (Result_35);
+  getColorPalettes: () -> (Result_34);
+  getCycleBalance: () -> (nat);
+  getDatabaseCredential: (credentialId: text) -> (Result_33);
+  getDeploymentFlags: (projectId: text) -> (Result_32) query;
+  getDesignInspirations: () -> (Result_31);
+  getDocumentationItems: () -> (Result_30);
+  getDownloadLogs: (tokenId: text) -> (vec DownloadLog) query;
+  getDownloadToken: (tokenId: text) -> (opt DownloadToken) query;
+  getEnvironmentConfig: (configId: text) -> (Result_29);
+  getEnvironmentConfigsByProject: (projectId: text) -> (Result_28);
+  getExternalServices: () -> (opt ExternalServiceTokens) query;
+  /// * Get featured projects with full details (for public profile display)
+  getFeaturedProjects: () -> (vec Project) query;
+  getFileDownloadSystemHealth: () ->
+   (record {
+      activeSessions: nat;
+      recommendedAction: text;
+      systemStatus: text;
+    }) query;
+  getFileShareLinks: (fileId: text) -> (vec FileShareLink) query;
+  getGitHubGuidelines: () -> (Result_27);
+  getLatestProjectVersion: (projectId: text) -> (Result_3);
+  getLinkedAccounts: () -> (vec principal) query;
+  getLoggerConfig: () -> (LoggerConfig) query;
+  getLogs: () -> (vec text) query;
+  getLogsByLevel: (level: text) -> (vec text) query;
+  getMarketplaceListing: (projectId: text) -> (opt MarketplaceListing) query;
+  getNewLogsSince: (marker: nat, maxLogsOpt: opt nat) ->
+   (record {
+      logs: vec text;
+      nextMarker: nat;
+    }) query;
+  getOnboardingStatus: () ->
+   (record {
+      accountCreatedAt: opt nat64;
+      firstLoginAt: opt nat64;
+      hasCompletedOnboarding: bool;
+    }) query;
+  getProject: (projectId: text) -> (Result_26);
+  getProjectDeployedAgents: (projectId: text) -> (Result_25);
+  getProjectExport: (exportId: text) -> (opt ProjectExport) query;
+  getProjectExports: (projectId: text) -> (vec ProjectExport) query;
+  getProjectFileMetadata: (userPrincipal: principal, projectId: text,
+   versionId: opt text) -> (Result_24);
+  getProjectFileTree: (userPrincipal: principal, projectId: text, versionId:
+   opt text) -> (Result_23);
+  getProjectFiles: (userPrincipal: principal, projectId: text, versionId:
+   opt text) -> (Result_22);
+  getProjectMessages: (projectId: text, limit: opt nat, offset: opt nat) ->
+   (Result_21) query;
+  getProjectMetadata: (projectId: text) -> (Result_20) query;
+  getProjectServerPairs: (projectId: text) -> (Result_19);
+  getProjectStatistics: (userPrincipal: principal, projectId: text,
+   versionId: opt text) -> (Result_18);
+  getProjectVersion: (versionId: text) -> (Result_3);
+  getProjectVersions: (projectId: text) -> (Result_17);
+  /// * Get public profile for this user (accessible by anyone)
+  getPublicProfile: () -> (opt PublicProfile) query;
+  /// * Get public profile stats (accessible by anyone)
+  getPublicProfileStats: () -> (PublicProfileStats) query;
+  getReferenceItems: () -> (Result_16);
+  getSecurityAuditLogs: (limit: opt nat) -> (Result_15);
+  getSelectedProject: () -> (opt text) query;
+  getSelectedServerPair: () -> (opt text) query;
+  getStorageUsage: (projectId: text) -> (nat) query;
+  getStoredFile: (fileId: text) -> (opt StoredFile) query;
+  getStoredFiles: (projectId: text) -> (vec StoredFile) query;
+  getStoredFilesByCategory: (projectId: text, category: text) ->
+   (vec StoredFile) query;
+  getStripeCustomerId: () -> (opt text) query;
+  getSubscriptionInfo: () -> (opt Subscription) query;
+  getSubscriptionTier: () -> (text) query;
+  getUIState: () ->
+   (record {
+      selectedProject: opt text;
+      selectedServerPair: opt text;
+    }) query;
+  getUserAccountInfo: () -> (opt User) query;
+  getUserBalance: () -> (nat);
+  getUserCanisters: () ->
+   (vec record {
+          canisterType: text;
+          name: text;
+          "principal": principal;
+        });
+  getUserMarketplaceListings: () -> (vec MarketplaceListing) query;
+  getUserProjects: () -> (vec Project) query;
+  getUserServerPairs: () -> (vec ServerPair) query;
+  getUserStateMetadata: () -> (Metadata);
+  getUserWalletId: () ->
+   (opt record {
+          accountIdentifier: text;
+          "principal": text;
+          subaccount: text;
+        }) query;
+  getVersionArtifactFile: (versionId: text, path: text, fileName: text) ->
+   (Result_14);
+  getVersionArtifacts: (versionId: text) -> (Result_13);
+  getVersionByString: (projectId: text, versionStr: text) -> (Result_3);
+  getWalletTransactions: (limit: opt nat) -> (vec Transaction) query;
+  http_request: (request: HttpRequest) -> (HttpResponse) query;
+  /// * Increment profile view count
+  incrementProfileViews: () -> ();
+  initializeDefaultSubscription: () -> (Result_6);
+  initializeProjectVersion: (projectId: text) -> (Result_3);
+  initializeUserAccount: (profile: UserProfile) -> (Result_5);
+  isCanisterController: (caller: principal) -> (bool);
+  isFirstTimeUser: () -> (bool) query;
+  isModuleInstalled: (canisterId: principal) -> (Result_6);
+  isSubscriptionActiveLocal: () -> (bool) query;
+  linkAccount: (accountId: principal) -> (Result_4);
+  logDebug: (message: text) -> ();
+  logError: (message: text) -> ();
+  logInfo: (message: text) -> ();
+  logWarn: (message: text) -> ();
+  markBackendChanged: (projectId: text) -> (Result_4);
+  markFirstLogin: () -> (Result_6);
+  markFrontendChanged: (projectId: text) -> (Result_4);
+  markProjectAccessed: (projectId: text) -> (Result_4);
+  markServerPairChanged: (projectId: text, serverPairId: text) -> (Result_4);
+  migratePathsToStandard: () -> ();
+  moveServerPairToProject: (pairId: text, fromProjectId: text, toProjectId:
+   text) -> (Result_4);
+  promoteVersionToWorkingCopy: (userPrincipal: principal, projectId: 
+   text, versionId: text, overwriteExisting: bool) -> (Result_7);
+  readCodeArtifact: (userPrincipal: principal, projectId: text, path: 
+   text, fileName: text, versionId: opt text) -> (Result_9);
+  refreshMonthlyAICredits: () -> (Result_6);
+  refundAICredits: (projectId: text, amount: nat, reason: text) -> (Result_6);
+  removeCanisterFromProject: (projectId: text, canisterId: principal,
+   versionId: opt text) -> (Result_7);
+  removeCanisterMetadata: (canisterId: principal) -> ();
+  removeDeployedAgentFromProject: (projectId: text, agentId: text) ->
+   (Result_4);
+  removeExternalService: (serviceType: text) -> (Result_4);
+  removeNpmPackageFromProject: (projectId: text, packageName: text) ->
+   (Result_7);
+  removePackageFromProject: (projectId: text, packageName: text) ->
+   (Result_7);
+  revokeDownloadToken: (tokenId: text, reason: text) -> (Result_4);
+  revokeFileShareLink: (linkId: text) -> (Result_4);
+  sendICP: (fromPrincipal: principal, toPrincipal: principal, amount: 
+   nat) -> (Result_7);
+  sendICPToAccountId: (fromPrincipal: principal, toAccountId: text, amount:
+   nat) -> (Result_7);
+  setLocalMode: (enabled: bool) -> ();
+  setPrimaryAccount: (accountId: principal) -> (Result_4);
+  setSelectedProject: (projectId: opt text) -> (Result_4);
+  setSelectedServerPair: (pairId: opt text) -> (Result_4);
+  setStripeCustomerId: (customerId: text) -> (Result_4);
+  setUIState: (serverPairId: opt text, projectId: opt text) -> (Result_4);
+  startCanister: (canisterId: principal) -> (Result_7);
+  startFileUploadSession: (projectId: text, fileName: text, mimeType: 
+   text, totalChunks: nat, totalSize: nat) -> (Result_7);
+  startProjectFilesDownloadSession: (userPrincipal: principal, projectId:
+   text, versionId: opt text) -> (Result_12);
+  startWasmDownloadSession: (projectId: text, path: text, fileName: text) ->
+   (Result_11);
+  startWasmUploadSession: (projectId: text, fileName: text, totalChunks: 
+   nat, totalSize: nat, canisterId: opt principal, canisterType: opt text,
+   deploymentStage: opt text) -> (Result_7);
+  stopCanister: (canisterId: principal) -> (Result_7);
+  streamProjectChunk: (token: StreamingCallbackToken) ->
+   (StreamingCallbackResponse) query;
+  testLogSequence: () ->
+   (record {
+      afterIncrement: nat;
+      afterLog: nat;
+      before: nat;
+    });
+  toggleMarketplaceForSale: (projectId: text, forSale: bool) -> (Result_4);
+  topUpCanister: (canisterId: principal, icpAmount: float64) -> (Result_7);
+  topUpCanisterCMC: (fromPrincipal: principal, canisterId: principal, amount:
+   nat) -> (Result_7);
+  topUpExternalCanister: (canisterIdText: text, icpAmount: float64) ->
+   (Result_7);
+  topUpSelf: (icpAmount: float64) -> (Result_7);
+  unlinkAccount: (accountId: principal) -> (Result_4);
+  updateAPICredential: (credential: APICredential) -> (Result_4);
+  updateAPIEndpoint: (endpoint: APIEndpoint) -> (Result_4);
+  updateAccountCanisterSettings: (settings: CanisterSettings) -> (Result_4);
+  updateAccountCyclesBalance: (newBalance: nat64) -> (Result_4);
+  updateAccountPreferences: (preferences: AccountPreferences) -> (Result_10);
+  updateAccountProject: (id: text, name: text, visibility: Visibility) ->
+   (Result_4);
+  updateAccountType: (accountType: AccountType) -> (Result_4);
+  updateAgentCredentials: (credentials: AgentCredentials) -> (Result_4);
+  updateBillingCycleEnd: (endTimestamp: nat64) -> (Result_4);
+  updateCanisterMetadata: (canisterId: principal, metadata:
+   CanisterMetadata) -> ();
+  updateCanisterMetadataBC: (canisterId: principal, name: text, canisterType:
+   text) -> (Result_7);
+  updateCodeArtifact: (userPrincipal: principal, projectId: text, fileName:
+   text, content: FileContent, path: text, versionId: opt text) -> (Result_9);
+  updateCodeRule: (rule: CodeRule) -> (Result_4);
+  updateCodeTemplate: (template: CodeTemplate) -> (Result_4);
+  updateCollaboratorStatus: (principalId: principal, status:
+   CollaboratorStatus) -> (Result_4);
+  updateColorPalette: (palette: ColorPalette) -> (Result_4);
+  updateDatabaseCredential: (credential: DatabaseCredential) -> (Result_4);
+  updateDeployedAgentInProject: (projectId: text, agent: DeployedAgent) ->
+   (Result_4);
+  updateDeploymentStatus: (id: text, status: text) -> (Result_4);
+  updateDeploymentStatusWithVersion: (id: text, status: text, versionId:
+   opt text) -> (Result_4);
+  updateDesignInspiration: (inspiration: DesignInspiration) -> (Result_4);
+  updateDocumentationItem: (doc: DocumentationItem) -> (Result_4);
+  updateEnvironmentConfig: (config: EnvironmentConfig) -> (Result_4);
+  updateFileMetadata: (fileId: text, fileName: opt text, visibility:
+   opt FileVisibility, tags: opt vec text, description: opt opt text,
+   category: opt opt text) -> (Result_4);
+  updateGitHubGuideline: (guideline: GitHubGuideline) -> (Result_4);
+  updateGitHubRepositories: (repositories: vec text) -> (Result_4);
+  updateLoggerConfig: (maxSize: nat, retentionDays: nat) -> ();
+  updateMarketplaceListing: (projectId: text, price: opt nat, title:
+   opt text, description: opt text, previewImages: opt vec text, demoUrl:
+   opt opt text, category: opt text, tags: opt vec text, version: opt text,
+   isPublished: opt bool) -> (Result_8);
+  updateMessageInProject: (projectId: text, messageId: text, newContent:
+   text, isGenerating: opt bool) -> (Result_4);
+  updateNotificationPreferences: (preferences: NotificationPreferences) ->
+   (Result_4);
+  updateProject: (project: Project, createNewVersion: bool, versionNotes:
+   opt text) -> (Result_7);
+  updateProjectMetadata: (projectId: text, metadata: ProjectMetadata) ->
+   (Result_4);
+  /// * Update public profile (owner only)
+  updatePublicProfile: (profile: PublicProfile) -> (Result_4);
+  updateReferenceItem: (item: ReferenceItem) -> (Result_4);
+  updateServerPair: (pairId: text, name: opt text, creditsAllocated:
+   opt nat) -> (Result_4);
+  updateStripeData: (customerId: opt text, subscriptionActive: bool,
+   billingCycleEnd: opt nat64) -> (Result_4);
+  updateStripeSubscriptionStatus: (active: bool) -> (Result_4);
+  updateSubscriptionTier: (tier: text, monthlyAllocation: nat) -> (Result_6);
+  updateUserPreferences: (preferences: UserPreferences) -> (Result_5);
+  updateUserProfile: (profile: UserProfile) -> (Result_5);
+  updateUserReputation: (newReputation: nat) -> (Result_4);
+  updateVersionCanisters: (versionId: text, canisters: opt vec principal) ->
+   (Result_3);
+  updateVersionPackages: (versionId: text, motokoPackages:
+   opt vec PackageInfo, npmPackages: opt vec NPMPackageInfo) -> (Result_3);
+  updateVersionStatus: (versionId: text, statusText: text) -> (Result_3);
+  uploadFileChunkToSession: (sessionId: text, chunkIndex: nat, chunkData:
+   blob) -> (Result_2);
+  uploadProjectFile: (projectId: text, fileName: text, mimeType: text,
+   fileData: blob, visibility: FileVisibility, tags: vec text, description:
+   opt text, category: opt text) -> (Result_1);
+  uploadWasmChunk: (sessionId: text, chunkIndex: nat, chunkData: vec nat8) ->
+   (Result);
+  wallet_receive: () -> (record {accepted: nat64;});
+}

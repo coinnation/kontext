@@ -1,0 +1,17 @@
+{
+  "name": "Kontext",
+  "short_name": "Kontext",
+  "description": "Kontext - AI-Powered Development Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#ff6b35",
+  "icons": [
+    {
+      "src": "https://pwi5a-sqaaa-aaaaa-qcfgq-cai.raw.icp0.io/projects/project-mfvtjz8x-hc7uz/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}
+

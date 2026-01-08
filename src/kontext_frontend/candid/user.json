@@ -1,0 +1,539 @@
+{
+  "type": "service",
+  "methods": {
+    "addCanisterMetadata": {
+      "type": "function",
+      "params": "IDL.Principal, CanisterMetadata",
+      "returns": "void",
+      "annotations": ""
+    },
+    "cleanOldLogs": {
+      "type": "function",
+      "params": "void",
+      "returns": "void",
+      "annotations": ""
+    },
+    "cleanupExpiredSessions": {
+      "type": "function",
+      "params": "void",
+      "returns": "void",
+      "annotations": "'oneway'"
+    },
+    "cleanupProjectFilesDownloadSession": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "cleanupWasmDownloadSession": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "clearAllLogs": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Nat",
+      "annotations": ""
+    },
+    "clearProjectMessages": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "completeOnboarding": {
+      "type": "function",
+      "params": "void",
+      "returns": "Result_4",
+      "annotations": ""
+    },
+    "copyVersionArtifacts": {
+      "type": "function",
+      "params": "IDL.Text, IDL.Text",
+      "returns": "Result_1",
+      "annotations": ""
+    },
+    "createProject": {
+      "type": "function",
+      "params": "Project, IDL.Opt(IDL.Bool)",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "createUserWallet": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Text",
+      "annotations": ""
+    },
+    "deleteCanister": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "deleteProject": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "deleteProjectFromAccount": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "deleteProjectVersion": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "deleteServerPair": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "downloadWasmChunk": {
+      "type": "function",
+      "params": "IDL.Text, IDL.Nat",
+      "returns": "Result_23",
+      "annotations": ""
+    },
+    "finalizeWasmUpload": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "getAICreditsBalance": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Nat",
+      "annotations": "'query'"
+    },
+    "getAIUsageThisMonth": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Nat",
+      "annotations": "'query'"
+    },
+    "getAccountDetails": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Opt(Account)",
+      "annotations": "'query'"
+    },
+    "getAccountIdByUsername": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_22",
+      "annotations": ""
+    },
+    "getBillingCycleEnd": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Opt(IDL.Nat64)",
+      "annotations": "'query'"
+    },
+    "getCanisterBalance": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_21",
+      "annotations": ""
+    },
+    "getCanisterStatus": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "getChunk": {
+      "type": "function",
+      "params": "ChunkId",
+      "returns": "IDL.Opt(Chunk)",
+      "annotations": ""
+    },
+    "getCycleBalance": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Nat",
+      "annotations": ""
+    },
+    "getLatestProjectVersion": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_1",
+      "annotations": ""
+    },
+    "getLinkedAccounts": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Vec(IDL.Principal)",
+      "annotations": "'query'"
+    },
+    "getLoggerConfig": {
+      "type": "function",
+      "params": "void",
+      "returns": "LoggerConfig",
+      "annotations": "'query'"
+    },
+    "getLogs": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Vec(IDL.Text)",
+      "annotations": "'query'"
+    },
+    "getLogsByLevel": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "IDL.Vec(IDL.Text)",
+      "annotations": "'query'"
+    },
+    "getProject": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_20",
+      "annotations": ""
+    },
+    "getProjectMetadata": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_15",
+      "annotations": "'query'"
+    },
+    "getProjectServerPairs": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_14",
+      "annotations": ""
+    },
+    "getProjectVersion": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_1",
+      "annotations": ""
+    },
+    "getProjectVersions": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_12",
+      "annotations": ""
+    },
+    "getStripeCustomerId": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Opt(IDL.Text)",
+      "annotations": "'query'"
+    },
+    "getSubscriptionInfo": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Opt(Subscription)",
+      "annotations": "'query'"
+    },
+    "getSubscriptionTier": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Text",
+      "annotations": "'query'"
+    },
+    "getUserAccountInfo": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Opt(User)",
+      "annotations": "'query'"
+    },
+    "getUserBalance": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Nat",
+      "annotations": ""
+    },
+    "getUserProjects": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Vec(Project)",
+      "annotations": "'query'"
+    },
+    "getUserServerPairs": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Vec(ServerPair)",
+      "annotations": "'query'"
+    },
+    "getUserStateMetadata": {
+      "type": "function",
+      "params": "void",
+      "returns": "Metadata",
+      "annotations": ""
+    },
+    "getVersionArtifacts": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_10",
+      "annotations": ""
+    },
+    "getVersionByString": {
+      "type": "function",
+      "params": "IDL.Text, IDL.Text",
+      "returns": "Result_1",
+      "annotations": ""
+    },
+    "initializeDefaultSubscription": {
+      "type": "function",
+      "params": "void",
+      "returns": "Result_4",
+      "annotations": ""
+    },
+    "initializeProjectVersion": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_1",
+      "annotations": ""
+    },
+    "initializeUserAccount": {
+      "type": "function",
+      "params": "UserProfile",
+      "returns": "Result_3",
+      "annotations": ""
+    },
+    "isCanisterController": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "IDL.Bool",
+      "annotations": ""
+    },
+    "isFirstTimeUser": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Bool",
+      "annotations": "'query'"
+    },
+    "isModuleInstalled": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_4",
+      "annotations": ""
+    },
+    "isSubscriptionActiveLocal": {
+      "type": "function",
+      "params": "void",
+      "returns": "IDL.Bool",
+      "annotations": "'query'"
+    },
+    "linkAccount": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "logDebug": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "void",
+      "annotations": ""
+    },
+    "logError": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "void",
+      "annotations": ""
+    },
+    "logInfo": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "void",
+      "annotations": ""
+    },
+    "logWarn": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "void",
+      "annotations": ""
+    },
+    "markFirstLogin": {
+      "type": "function",
+      "params": "void",
+      "returns": "Result_4",
+      "annotations": ""
+    },
+    "markProjectAccessed": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "migratePathsToStandard": {
+      "type": "function",
+      "params": "void",
+      "returns": "void",
+      "annotations": ""
+    },
+    "refreshMonthlyAICredits": {
+      "type": "function",
+      "params": "void",
+      "returns": "Result_4",
+      "annotations": ""
+    },
+    "refundAICredits": {
+      "type": "function",
+      "params": "IDL.Text, IDL.Nat, IDL.Text",
+      "returns": "Result_4",
+      "annotations": ""
+    },
+    "removeCanisterMetadata": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "void",
+      "annotations": ""
+    },
+    "removeExternalService": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "removePackageFromProject": {
+      "type": "function",
+      "params": "IDL.Text, IDL.Text",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "setLocalMode": {
+      "type": "function",
+      "params": "IDL.Bool",
+      "returns": "void",
+      "annotations": ""
+    },
+    "setPrimaryAccount": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "setStripeCustomerId": {
+      "type": "function",
+      "params": "IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "startCanister": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "stopCanister": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "topUpCanister": {
+      "type": "function",
+      "params": "IDL.Principal, IDL.Float64",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "topUpExternalCanister": {
+      "type": "function",
+      "params": "IDL.Text, IDL.Float64",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "topUpSelf": {
+      "type": "function",
+      "params": "IDL.Float64",
+      "returns": "Result_5",
+      "annotations": ""
+    },
+    "unlinkAccount": {
+      "type": "function",
+      "params": "IDL.Principal",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "updateAccountCyclesBalance": {
+      "type": "function",
+      "params": "IDL.Nat64",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "updateAccountPreferences": {
+      "type": "function",
+      "params": "AccountPreferences",
+      "returns": "Result_7",
+      "annotations": ""
+    },
+    "updateAccountType": {
+      "type": "function",
+      "params": "AccountType",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "updateBillingCycleEnd": {
+      "type": "function",
+      "params": "IDL.Nat64",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "updateDeploymentStatus": {
+      "type": "function",
+      "params": "IDL.Text, IDL.Text",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "updateGitHubRepositories": {
+      "type": "function",
+      "params": "IDL.Vec(IDL.Text)",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "updateLoggerConfig": {
+      "type": "function",
+      "params": "IDL.Nat, IDL.Nat",
+      "returns": "void",
+      "annotations": ""
+    },
+    "updateStripeSubscriptionStatus": {
+      "type": "function",
+      "params": "IDL.Bool",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "updateSubscriptionTier": {
+      "type": "function",
+      "params": "IDL.Text, IDL.Nat",
+      "returns": "Result_4",
+      "annotations": ""
+    },
+    "updateUserPreferences": {
+      "type": "function",
+      "params": "UserPreferences",
+      "returns": "Result_3",
+      "annotations": ""
+    },
+    "updateUserProfile": {
+      "type": "function",
+      "params": "UserProfile",
+      "returns": "Result_3",
+      "annotations": ""
+    },
+    "updateUserReputation": {
+      "type": "function",
+      "params": "IDL.Nat",
+      "returns": "Result_2",
+      "annotations": ""
+    },
+    "updateVersionStatus": {
+      "type": "function",
+      "params": "IDL.Text, IDL.Text",
+      "returns": "Result_1",
+      "annotations": ""
+    }
+  }
+}

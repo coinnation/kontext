@@ -1,0 +1,11 @@
+{
+  "kontext_frontend": {
+    "ic": "pdpmn-tyaaa-aaaaa-qcffa-cai"
+  },
+  "kontext_backend": {
+    "ic": "pkmhr-fqaaa-aaaaa-qcfeq-cai"
+  },
+  "user_canister": {
+    "ic": "pnnbf-iiaaa-aaaaa-qcfea-cai"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "projectMeta": {
+    "name": "Context AI Platform",
+    "description": "AI-powered software creation platform with beautiful landing page and Internet Identity authentication",
+    "complexity": "medium",
+    "userIntent": "Build foundation for AI software creation platform called Context with landing page and authentication"
+  },
+  "coreRequirements": {
+    "primaryGoal": "Create a beautiful landing page with Internet Identity login for an AI software creation platform",
+    "essentialFeatures": [
+      "Landing page with modern design",
+      "Internet Identity authentication",
+      "Authentication context for React",
+      "Black, gray, green, orange, and brown color scheme",
+      "No ICP branding visible to end users"
+    ],
+    "explicitRequirements": [
+      "Beautiful landing page better than reference",
+      "Internet Identity login integration",
+      "React authentication context implementation",
+      "Hide ICP infrastructure from users",
+      "Use specified color palette exclusively"
+    ]
+  },
+  "minimalArchitecture": {
+    "backendEntities": [
+      "User authentication session",
+      "User profile data"
+    ],
+    "frontendComponents": [
+      "Landing page with hero section",
+      "Feature showcase section",
+      "Internet Identity login button",
+      "Authentication context provider",
+      "Protected route wrapper"
+    ],
+    "keyInteractions": [
+      "User clicks login to authenticate with Internet Identity",
+      "Authentication state managed via React context",
+      "Redirect to dashboard after successful login",
+      "Landing page displays platform capabilities"
+    ]
+  },
+  "scopeBoundaries": {
+    "included": [
+      "Beautiful landing page design",
+      "Internet Identity authentication flow",
+      "React authentication context",
+      "Feature descriptions without ICP references",
+      "Specified color scheme implementation"
+    ],
+    "excluded": [
+      "Actual AI functionality",
+      "Code generation features",
+      "Template marketplace",
+      "Pricing implementation",
+      "Any ICP-specific terminology in UI"
+    ]
+  }
+}

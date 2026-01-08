@@ -1,0 +1,134 @@
+type TransactionType = 
+ variant {
+   canister;
+   received;
+   sent;
+ };
+type Transaction = 
+ record {
+   amount: nat;
+   counterparty: text;
+   isPositive: bool;
+   memo: opt text;
+   timestamp: int;
+   transactionType: TransactionType;
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: vec PaymentRecord;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: text;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: record {
+         receivedChunks: nat;
+         totalChunks: nat;
+       };
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: PaymentRecord;
+ };
+type PaymentStatus = 
+ variant {
+   completed;
+   failed;
+   pending;
+   refunded;
+ };
+type PaymentRecord = 
+ record {
+   amountUSD: float64;
+   creditsGranted: nat;
+   icpSpent: nat;
+   paymentIntentId: text;
+   status: PaymentStatus;
+   tbCyclesRequested: float64;
+   timestamp: int;
+   userPrincipal: principal;
+ };
+type CanisterDefaultSettings = 
+ record {
+   computeAllocation: nat;
+   cyclesAmount: nat;
+   durationInDays: nat;
+   freezingThreshold: opt nat;
+   memoryGB: nat;
+ };
+service : {
+  clearAllLogs: () -> (nat);
+  createCanisterWithSettings: (userPrincipal: principal, memoryGB: nat,
+   computeAllocation: nat, freezingThreshold: opt nat, durationInDays: 
+   nat, cyclesAmount: nat) -> (Result_2);
+  createPlatformWallet: () -> (text);
+  deleteCanister: (canisterId: principal) -> (Result_2);
+  deployStoredWasm: (fileName: text, canisterId: principal, userPrincipal:
+   principal) -> (Result_2);
+  deployToExistingCanister: (canisterId: principal, wasm: vec nat8) ->
+   (Result_2);
+  finalizeWasmUpload: (sessionId: text) -> (Result_2);
+  getAdminPrincipal: () -> (Result_2);
+  getCallerPrincipal: () -> (text);
+  getLogs: () -> (vec text) query;
+  getNewLogsSince: (marker: nat, maxLogsOpt: opt nat) ->
+   (record {
+      logs: vec text;
+      nextMarker: nat;
+    }) query;
+  getPaymentHistory: (userPrincipal: opt principal) -> (Result_3);
+  getPlatformBalance: () -> (nat);
+  getPlatformCycleBalance: () -> (nat);
+  getPlatformTransactions: (limit: opt nat) -> (vec Transaction) query;
+  getPlatformWalletId: () ->
+   (opt record {
+          accountIdentifier: text;
+          "principal": text;
+          subaccount: text;
+        }) query;
+  getPricingInfo: () ->
+   (record {
+      creditsPerUSD: nat;
+      description: text;
+      maxAmountUSD: float64;
+      minAmountUSD: float64;
+    }) query;
+  getStripePublishableKey: () -> (text) query;
+  getStripeSecretKey: () -> (Result_2);
+  getUserPlatformCanister: (userPrincipal: principal) -> (vec principal);
+  isAdmin: () -> (bool);
+  logDebug: (message: text) -> ();
+  logError: (message: text) -> ();
+  logInfo: (message: text) -> ();
+  logWarn: (message: text) -> ();
+  recordPaymentAndCreditUser: (paymentIntentId: text, amountUSD: float64,
+   userCanisterId: principal) -> (Result_2);
+  recordPaymentWithCalculatedICP: (paymentIntentId: text, amountUSD: 
+   float64, userCanisterId: principal, credits: nat, tbCycles: float64,
+   icpE8sCalculated: nat) -> (Result_2);
+  removeUserPlatformCanister: (userPrincipal: principal) -> (Result_2);
+  sendICPFromPlatform: (toPrincipal: principal, amount: nat) -> (Result_2);
+  sendICPFromPlatformToAccountId: (toAccountId: text, amount: nat) ->
+   (Result_2);
+  startWasmUploadSession: (fileName: text, totalChunks: nat, totalSize:
+   nat) -> (Result_2);
+  topUpCanisterCMC: (canisterId: principal, amount: nat) -> (Result_2);
+  topUpUserCanisterFromPlatform: (userCanisterId: principal, icpAmount:
+   float64) -> (Result_2);
+  topUpUserCanisterWithExactICP: (userCanisterId: principal, icpE8s: 
+   nat) -> (Result_2);
+  updateAdminPrincipal: (newAdminPrincipal: text) -> (Result_2);
+  updateCanisterDefaults: (settings: CanisterDefaultSettings) -> (Result_2);
+  updateStripeKeys: (newSecretKey: text, newPublishableKey: text) ->
+   (Result_2);
+  uploadWasmChunk: (sessionId: text, chunkIndex: nat, chunkData: vec nat8) ->
+   (Result_1);
+  verifyPayment: (paymentIntentId: text) -> (Result);
+  wallet_receive: () -> (record {accepted: nat64;});
+}

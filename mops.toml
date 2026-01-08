@@ -1,0 +1,8 @@
+[dependencies]
+cn-logger = "0.1.1"
+sha2 = "0.1.0"
+
+[package]
+name = "KONTEXT_MAIN"
+version = "0.1.0"
+description = "Imported fullstack project"

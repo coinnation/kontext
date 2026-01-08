@@ -1,0 +1,1982 @@
+type XDRRate = 
+ record {
+   icpPerXDR: float64;
+   lastUpdated: nat64;
+   usdPerXDR: float64;
+ };
+type VoteType = 
+ variant {
+   Downvote;
+   Upvote;
+ };
+type VideoProgress = 
+ record {
+   bookmarks: vec VideoBookmark;
+   completedAt: opt nat64;
+   isCompleted: bool;
+   lastPosition: nat;
+   lastWatchedAt: nat64;
+   lessonId: text;
+   notes: vec VideoNote;
+   playbackSpeed: float64;
+   progressId: text;
+   progressPercent: float64;
+   student: principal;
+   totalDuration: nat;
+   watchCount: nat;
+   watchedDuration: nat;
+ };
+type VideoNote = 
+ record {
+   content: text;
+   createdAt: nat64;
+   noteId: text;
+   timestamp: nat;
+   updatedAt: nat64;
+ };
+type VideoBookmark = 
+ record {
+   bookmarkId: text;
+   createdAt: nat64;
+   timestamp: nat;
+   title: text;
+ };
+type VerifiedPurchase = 
+ record {
+   amountPaid: nat;
+   buyer: principal;
+   exportId: text;
+   listingId: text;
+   projectId: text;
+   purchaseId: text;
+   purchasedAt: nat64;
+   status: PurchaseStatus;
+   stripePaymentIntentId: text;
+   userCanisterId: principal;
+ };
+type UserMetrics = 
+ record {
+   activeUsersThisMonth: nat;
+   activeUsersThisWeek: nat;
+   activeUsersToday: nat;
+   avgActionsPerUser: float64;
+   avgSessionsPerUser: float64;
+   newUsersThisMonth: nat;
+   newUsersThisWeek: nat;
+   newUsersToday: nat;
+   topUsers: vec record {
+                   principal;
+                   nat;
+                 };
+   totalUsers: nat;
+   totalUsersAllTime: nat;
+ };
+type UserForumProfile = 
+ record {
+   avatarUrl: opt text;
+   badges: vec text;
+   displayName: text;
+   isAdmin: bool;
+   isModerator: bool;
+   joinedAt: nat64;
+   replyCount: nat;
+   reputation: int;
+   threadCount: nat;
+   upvotesReceived: nat;
+   userId: principal;
+ };
+type UserCanisterInfo = 
+ record {
+   controllers: vec principal;
+   createdAt: nat64;
+   cycleBalance: nat;
+   lastTopup: opt nat64;
+   memorySize: nat;
+   status: text;
+   totalTopups: nat;
+   userCanisterId: principal;
+   userPrincipal: principal;
+ };
+type UserAction = 
+ variant {
+   AIRequest;
+   AgentCreated;
+   AgentDeployed;
+   CreditsPurchased;
+   DatabaseQuery;
+   FileUploaded;
+   Login;
+   Logout;
+   MarketplaceListing;
+   MarketplacePurchase;
+   ProjectCreated;
+   ProjectDeployed;
+   SubscriptionPurchased;
+ };
+type TransactionType = 
+ variant {
+   canister;
+   received;
+   sent;
+ };
+type Transaction = 
+ record {
+   amount: nat;
+   counterparty: text;
+   isPositive: bool;
+   memo: opt text;
+   timestamp: int;
+   transactionType: TransactionType;
+ };
+type Timestamp = nat64;
+type TimeWindow = 
+ variant {
+   AllTime;
+   Custom: DateRange;
+   Last24Hours;
+   Last30Days;
+   Last7Days;
+   Last90Days;
+ };
+type TeamMemberEarnings = 
+ record {
+   calculatedAt: nat64;
+   creditCommissionEarnings: nat;
+   earningsAllTime: nat;
+   earningsLastMonth: nat;
+   earningsThisMonth: nat;
+   marketplaceEarnings: nat;
+   memberId: nat;
+   memberName: text;
+   revenueSharePercent: float64;
+   subscriptionEarnings: nat;
+   totalEarnings: nat;
+ };
+type TeamMember = 
+ record {
+   active: bool;
+   addedAt: nat64;
+   creditCommissionShare: bool;
+   id: nat;
+   marketplaceShare: bool;
+   name: text;
+   revenueSharePercent: float64;
+   role: text;
+   subscriptionShare: bool;
+ };
+type TeamEarningsReport = 
+ record {
+   generatedAt: nat64;
+   memberEarnings: vec TeamMemberEarnings;
+   platformRetainedRevenue: nat;
+   totalPlatformRevenue: nat;
+   totalTeamPayouts: nat;
+ };
+type SystemHealthMetrics = 
+ record {
+   activeUsers: nat;
+   alerts: vec text;
+   currentCycles: nat;
+   cyclesBurnRatePerDay: nat;
+   estimatedDaysRemaining: nat;
+   healthStatus: HealthStatus;
+   httpOutcallsThisMonth: nat;
+   httpOutcallsToday: nat;
+   lastUpgradeTime: opt nat64;
+   memoryCapacityBytes: nat;
+   memoryUsedBytes: nat;
+   memoryUtilizationPercent: float64;
+   storageCapacityBytes: nat;
+   storageUsedBytes: nat;
+   storageUtilizationPercent: float64;
+   totalUsers: nat;
+   uptimePercent: float64;
+ };
+type SyllabusItem = 
+ record {
+   description: text;
+   lessonIds: vec text;
+   sectionTitle: text;
+ };
+type SubscriptionTier = 
+ variant {
+   DEVELOPER;
+   ENTERPRISE;
+   FREE;
+   PRO;
+   STARTER;
+ };
+type SubscriptionPlanInput = 
+ record {
+   badges: vec text;
+   ctaText: text;
+   description: text;
+   discountPercentage: opt nat;
+   features: vec PlanFeature;
+   hostingCredits: nat;
+   isActive: bool;
+   maxProjects: opt nat;
+   monthlyCredits: nat;
+   monthlyPrice: nat;
+   name: text;
+   order: nat;
+   originalPrice: opt nat;
+   stripePriceId: opt text;
+   stripeProductId: opt text;
+   tier: SubscriptionTier;
+ };
+type SubscriptionPlan = 
+ record {
+   badges: vec text;
+   createdAt: int;
+   ctaText: text;
+   description: text;
+   discountPercentage: opt nat;
+   features: vec PlanFeature;
+   hostingCredits: nat;
+   isActive: bool;
+   maxProjects: opt nat;
+   monthlyCredits: nat;
+   monthlyPrice: nat;
+   name: text;
+   order: nat;
+   originalPrice: opt nat;
+   stripePriceId: opt text;
+   stripeProductId: opt text;
+   tier: SubscriptionTier;
+   updatedAt: int;
+ };
+type SubscriptionAllocation = 
+ record {
+   aiFundingPercent: float64;
+   aiFundingUSD: float64;
+   icpFundingPercent: float64;
+   icpFundingUSD: float64;
+   monthlyPriceCents: nat;
+   platformRevenuePercent: float64;
+   platformRevenueUSD: float64;
+   rationale: text;
+   tier: text;
+ };
+type SellerResponse = 
+ record {
+   respondedAt: nat64;
+   responseText: text;
+   updatedAt: nat64;
+ };
+type SearchResultType = 
+ variant {
+   Reply;
+   Thread;
+ };
+type SearchResult = 
+ record {
+   author: principal;
+   authorName: text;
+   categoryName: opt text;
+   createdAt: nat64;
+   excerpt: text;
+   id: text;
+   resultType: SearchResultType;
+   title: text;
+ };
+type ReviewSummary = 
+ record {
+   averageRating: float64;
+   listingId: text;
+   ratingDistribution: vec nat;
+   recommendationRate: float64;
+   totalReviews: nat;
+   verifiedPurchaseRate: float64;
+ };
+type ReviewReport = 
+ record {
+   description: text;
+   reason: ReportReason;
+   reportId: text;
+   reportedAt: nat64;
+   reporter: principal;
+   resolution: opt text;
+   resolvedAt: opt nat64;
+   resolvedBy: opt principal;
+   reviewId: text;
+   status: ReportStatus;
+ };
+type RevenueMetrics = 
+ record {
+   arrCents: nat;
+   avgLifetimeValueCents: nat;
+   avgRevenuePerUser: nat;
+   churnRate: float64;
+   conversionRate: float64;
+   mrrCents: nat;
+   payingUsers: nat;
+   retentionRate: float64;
+   revenueByEnterprise: nat;
+   revenueByFree: nat;
+   revenueByPro: nat;
+   revenueByStarter: nat;
+   revenueFromCredits: nat;
+   revenueFromMarketplace: nat;
+   revenueFromSubscriptions: nat;
+   totalRevenueCents: nat;
+   usersByEnterprise: nat;
+   usersByFree: nat;
+   usersByPro: nat;
+   usersByStarter: nat;
+ };
+type Result_9 = 
+ variant {
+   err: text;
+   ok: bool;
+ };
+type Result_8 = 
+ variant {
+   err: text;
+   ok: text;
+ };
+type Result_7 = 
+ variant {
+   err: text;
+   ok: MarketplaceListing;
+ };
+type Result_6 = 
+ variant {
+   err: text;
+   ok: record {
+         receivedChunks: nat;
+         totalChunks: nat;
+       };
+ };
+type Result_50 = 
+ variant {
+   err: text;
+   ok: CanisterReplacementInfo;
+ };
+type Result_5 = 
+ variant {
+   err: text;
+   ok: SubscriptionPlan;
+ };
+type Result_49 = 
+ variant {
+   err: text;
+   ok: AITokenReserve;
+ };
+type Result_48 = 
+ variant {
+   err: text;
+   ok: ICPReserve;
+ };
+type Result_47 = 
+ variant {
+   err: text;
+   ok: TeamEarningsReport;
+ };
+type Result_46 = 
+ variant {
+   err: text;
+   ok: record {url: text;};
+ };
+type Result_45 = 
+ variant {
+   err: text;
+   ok: record {
+         id: text;
+         url: text;
+       };
+ };
+type Result_44 = 
+ variant {
+   err: text;
+   ok: record {
+         amount: nat;
+         clientSecret: text;
+         id: text;
+       };
+ };
+type Result_43 = 
+ variant {
+   err: text;
+   ok: record {
+         downloadUrl: text;
+         expiresAt: nat64;
+         tokenId: text;
+       };
+ };
+type Result_42 = 
+ variant {
+   err: text;
+   ok: vec text;
+ };
+type Result_41 = 
+ variant {
+   err: text;
+   ok: vec Course;
+ };
+type Result_40 = 
+ variant {
+   err: text;
+   ok: record {
+         vec Course;
+         nat;
+       };
+ };
+type Result_4 = 
+ variant {
+   err: text;
+   ok: DownloadToken;
+ };
+type Result_39 = 
+ variant {
+   err: text;
+   ok: vec MarketplaceListing;
+ };
+type Result_38 = 
+ variant {
+   err: text;
+   ok: record {
+         vec MarketplaceListing;
+         nat;
+       };
+ };
+type Result_37 = 
+ variant {
+   err: text;
+   ok: vec NotificationEvent;
+ };
+type Result_36 = 
+ variant {
+   err: text;
+   ok: vec PooledServerPair;
+ };
+type Result_35 = 
+ variant {
+   err: text;
+   ok: vec PooledCanister;
+ };
+type Result_34 = 
+ variant {
+   err: text;
+   ok: vec AcademicProgram;
+ };
+type Result_33 = 
+ variant {
+   err: text;
+   ok: record {
+         vec AcademicProgram;
+         nat;
+       };
+ };
+type Result_32 = 
+ variant {
+   err: text;
+   ok: vec SubscriptionPlan;
+ };
+type Result_31 = 
+ variant {
+   err: text;
+   ok: vec record {
+             principal;
+             principal;
+           };
+ };
+type Result_30 = 
+ variant {
+   err: text;
+   ok:
+    record {
+      errorRecords: nat;
+      featureUsageRecords: nat;
+      marketplaceRecords: nat;
+      performanceRecords: nat;
+      revenueRecords: nat;
+      systemHealthRecords: nat;
+      totalUsers: nat;
+      userActivityRecords: nat;
+    };
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: PaymentRecord;
+ };
+type Result_29 = 
+ variant {
+   err: text;
+   ok: DashboardData;
+ };
+type Result_28 = 
+ variant {
+   err: text;
+   ok: DomainStatistics;
+ };
+type Result_27 = 
+ variant {
+   err: text;
+   ok: ErrorMetrics;
+ };
+type Result_26 = 
+ variant {
+   err: text;
+   ok: FeatureMetrics;
+ };
+type Result_25 = 
+ variant {
+   err: text;
+   ok: MarketplaceMetrics;
+ };
+type Result_24 = 
+ variant {
+   err: text;
+   ok: NotificationStats;
+ };
+type Result_23 = 
+ variant {
+   err: text;
+   ok: vec PaymentRecord;
+ };
+type Result_22 = 
+ variant {
+   err: text;
+   ok: vec ReviewReport;
+ };
+type Result_21 = 
+ variant {
+   err: text;
+   ok: PerformanceMetrics;
+ };
+type Result_20 = 
+ variant {
+   err: text;
+   ok: PoolStats;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: record {
+         amount: nat;
+         currency: text;
+         id: text;
+         status: text;
+       };
+ };
+type Result_19 = 
+ variant {
+   err: text;
+   ok: RevenueMetrics;
+ };
+type Result_18 = 
+ variant {
+   err: text;
+   ok:
+    record {
+      active: bool;
+      cached: bool;
+      expiresAt: nat64;
+      stripeCustomerId: opt text;
+      tier: text;
+    };
+ };
+type Result_17 = 
+ variant {
+   err: text;
+   ok: SystemHealthMetrics;
+ };
+type Result_16 = 
+ variant {
+   err: text;
+   ok: vec TeamMember;
+ };
+type Result_15 = 
+ variant {
+   err: text;
+   ok: UserMetrics;
+ };
+type Result_14 = 
+ variant {
+   err: text;
+   ok: UserCanisterInfo;
+ };
+type Result_13 = 
+ variant {
+   err: text;
+   ok: ListingFeePayment;
+ };
+type Result_12 = 
+ variant {
+   err: text;
+   ok: opt record {
+             customerId: text;
+             email: opt text;
+           };
+ };
+type Result_11 = 
+ variant {
+   err: text;
+   ok: nat;
+ };
+type Result_10 = 
+ variant {
+   err: text;
+   ok: ListingFeeConfig;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: VerifiedPurchase;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type ResourceType = 
+ variant {
+   code;
+   other;
+   pdf;
+   slides;
+   worksheet;
+ };
+type ReportStatus = 
+ variant {
+   actionTaken;
+   dismissed;
+   pending;
+   reviewed;
+ };
+type ReportReason = 
+ variant {
+   irrelevant;
+   misleading;
+   offensive;
+   other;
+   spam;
+ };
+type PurchaseStatus = 
+ variant {
+   completed;
+   failed;
+   pending;
+   refunded;
+ };
+type ProjectReview = 
+ record {
+   comment: text;
+   cons: vec text;
+   createdAt: nat64;
+   helpfulCount: nat;
+   hiddenReason: opt text;
+   isHidden: bool;
+   isVerifiedPurchase: bool;
+   listingId: text;
+   pros: vec text;
+   purchaseId: text;
+   rating: nat;
+   reportCount: nat;
+   reviewId: text;
+   reviewer: principal;
+   sellerResponse: opt SellerResponse;
+   title: text;
+   updatedAt: nat64;
+   wouldRecommend: bool;
+ };
+type ProjectImport = 
+ record {
+   buyer: principal;
+   buyerUserCanisterId: principal;
+   importId: text;
+   importMethod: ImportMethod;
+   importedAt: nat64;
+   importedProjectId: text;
+   listingId: text;
+   purchaseId: text;
+ };
+type ProgramEnrollment = 
+ record {
+   completedAt: opt nat64;
+   completedCourseIds: vec text;
+   creditsEarned: nat;
+   currentCourseId: opt text;
+   enrolledAt: nat64;
+   enrollmentId: text;
+   programId: text;
+   progress: float64;
+   startedAt: opt nat64;
+   status: EnrollmentStatus;
+   student: principal;
+ };
+type PooledServerPair = 
+ record {
+   assignedAt: opt nat64;
+   assignedTo: opt principal;
+   backendCanisterId: principal;
+   backendCycles: opt nat;
+   createdAt: nat64;
+   frontendCanisterId: principal;
+   frontendCycles: opt nat;
+   metadata: opt vec record {
+                       text;
+                       text;
+                     };
+   pairId: text;
+   poolType: CanisterPoolType;
+   status: PoolCanisterStatus;
+ };
+type PooledCanister = 
+ record {
+   assignedAt: opt nat64;
+   assignedTo: opt principal;
+   canisterId: principal;
+   createdAt: nat64;
+   cycleBalance: opt nat;
+   durationDays: nat;
+   memoryGB: nat;
+   metadata: opt vec record {
+                       text;
+                       text;
+                     };
+   poolType: CanisterPoolType;
+   status: PoolCanisterStatus;
+ };
+type PoolStats = 
+ record {
+   assignedCount: nat;
+   availableCount: nat;
+   creatingCount: nat;
+   failedCount: nat;
+   maintenanceCount: nat;
+   poolType: CanisterPoolType;
+   totalCount: nat;
+   totalCyclesAllocated: nat;
+ };
+type PoolCanisterStatus = 
+ variant {
+   Assigned;
+   Available;
+   Creating;
+   Failed;
+   Maintenance;
+ };
+type PlanFeature = 
+ record {
+   description: text;
+   enabled: bool;
+   order: nat;
+ };
+type PerformanceMetrics = 
+ record {
+   avgAIRequestTimeMs: nat;
+   avgDatabaseQueryTimeMs: nat;
+   avgDeploymentTimeMs: nat;
+   avgFileUploadTimeMs: nat;
+   avgResponseTimeMs: nat;
+   cacheHitRate: float64;
+   medianResponseTimeMs: nat;
+   overallSuccessRate: float64;
+   p95ResponseTimeMs: nat;
+   p99ResponseTimeMs: nat;
+   slowestOperations: vec record {
+                            OperationType;
+                            nat;
+                          };
+   totalOperations: nat;
+ };
+type PaymentType = 
+ variant {
+   Credits;
+   MarketplacePlatformFee;
+   MarketplaceSale;
+   Subscription;
+ };
+type PaymentStatus__1 = 
+ variant {
+   Failed;
+   Pending;
+   Refunded;
+   Succeeded;
+ };
+type PaymentStatus = 
+ variant {
+   completed;
+   failed;
+   pending;
+   refunded;
+ };
+type PaymentRecord = 
+ record {
+   amountUSD: float64;
+   creditsGranted: nat;
+   icpSpent: nat;
+   paymentIntentId: text;
+   status: PaymentStatus;
+   tbCyclesRequested: float64;
+   timestamp: int;
+   userPrincipal: principal;
+ };
+type OperationType = 
+ variant {
+   AIRequest;
+   APICall;
+   CanisterCall;
+   DatabaseQuery;
+   Deployment;
+   FileDownload;
+   FileUpload;
+   HTTPOutcall;
+ };
+type NotificationStats = 
+ record {
+   newestNotification: opt Timestamp;
+   notificationsByCategory: vec record {
+                                  NotificationCategory;
+                                  nat;
+                                };
+   notificationsBySeverity: vec record {
+                                  NotificationSeverity;
+                                  nat;
+                                };
+   oldestNotification: opt Timestamp;
+   totalNotifications: nat;
+ };
+type NotificationSeverity = 
+ variant {
+   Critical;
+   High;
+   Low;
+   Medium;
+ };
+type NotificationEvent = 
+ record {
+   actions: opt vec NotificationAction;
+   category: NotificationCategory;
+   createdBy: principal;
+   expiresAt: opt Timestamp;
+   icon: opt text;
+   id: nat;
+   isPinned: bool;
+   message: text;
+   metadata: opt vec record {
+                       text;
+                       text;
+                     };
+   severity: NotificationSeverity;
+   targetAudience: NotificationAudience;
+   timestamp: Timestamp;
+   title: text;
+ };
+type NotificationCategory = 
+ variant {
+   Account;
+   Announcement;
+   Credits;
+   Deployment;
+   Feature;
+   Security;
+   Subscription;
+   System;
+ };
+type NotificationAudience = 
+ variant {
+   ActiveUsers: nat64;
+   All;
+   NewUsers: nat64;
+   SpecificUsers: vec principal;
+   SubscriptionTier: text;
+ };
+type NotificationAction = 
+ record {
+   actionLabel: text;
+   actionType:
+    variant {
+      Dismiss;
+      ExternalLink: text;
+      NavigateTo: text;
+      OpenDialog: text;
+    };
+ };
+type MarketplaceMetrics = 
+ record {
+   activeListings: nat;
+   avgSalePriceCents: nat;
+   avgTimeToPurchase: nat;
+   conversionRate: float64;
+   platformFeesCollectedCents: nat;
+   salesThisMonth: nat;
+   salesThisWeek: nat;
+   topCategories: vec record {
+                        text;
+                        nat;
+                      };
+   topSellers: vec record {
+                     principal;
+                     nat;
+                   };
+   totalListings: nat;
+   totalRevenueCents: nat;
+   totalSales: nat;
+   totalViews: nat;
+ };
+type MarketplaceListing = 
+ record {
+   category: text;
+   demoUrl: opt text;
+   description: text;
+   exportId: text;
+   featuredUntil: opt nat64;
+   isActive: bool;
+   isPublished: bool;
+   listedAt: nat64;
+   listingId: text;
+   listingTier: ListingTier;
+   premiumUntil: opt nat64;
+   previewImages: vec text;
+   price: nat;
+   projectId: text;
+   seller: principal;
+   stripeAccountId: text;
+   tags: vec text;
+   title: text;
+   totalSales: nat;
+   updatedAt: nat64;
+   userCanisterId: principal;
+   version: text;
+ };
+type MarketplaceAction = 
+ variant {
+   ListingCreated;
+   ListingPublished;
+   ListingUnpublished;
+   ListingUpdated;
+   ListingViewed;
+   ProjectDownloaded;
+   ProjectSold;
+ };
+type ListingTier = 
+ variant {
+   basic;
+   featured;
+   premium;
+ };
+type ListingFeeType = 
+ variant {
+   basic;
+   featured;
+   premium;
+ };
+type ListingFeePayment = 
+ record {
+   amountPaid: nat;
+   feeType: ListingFeeType;
+   listingId: text;
+   paidAt: nat64;
+   paymentId: text;
+   refundReason: opt text;
+   refundedAt: opt nat64;
+   seller: principal;
+   status: FeePaymentStatus;
+   stripePaymentIntentId: text;
+ };
+type ListingFeeConfig = 
+ record {
+   basicFee: nat;
+   featuredDurationDays: nat;
+   featuredFee: nat;
+   premiumDurationDays: nat;
+   premiumFee: nat;
+ };
+type LessonResource = 
+ record {
+   description: text;
+   fileSize: nat;
+   fileType: ResourceType;
+   fileUrl: text;
+   resourceId: text;
+   title: text;
+ };
+type Lesson = 
+ record {
+   accessTier: AccessTier;
+   averageRating: float64;
+   completionRate: float64;
+   courseId: text;
+   createdAt: nat64;
+   description: text;
+   duration: nat;
+   isFree: bool;
+   isPublished: bool;
+   lessonId: text;
+   orderIndex: nat;
+   resources: vec LessonResource;
+   title: text;
+   transcript: opt text;
+   updatedAt: nat64;
+   viewCount: nat;
+   youtubeVideoId: text;
+ };
+type LearningPath = 
+ record {
+   courseIds: vec text;
+   description: text;
+   difficulty: DifficultyLevel;
+   estimatedHours: nat;
+   forRole: text;
+   pathId: text;
+   programIds: vec text;
+   title: text;
+ };
+type ImportMethod = 
+ variant {
+   directImport;
+   download;
+   fullDeploy;
+ };
+type ICPReserve = 
+ record {
+   currentICPBalance: float64;
+   currentUSDValue: float64;
+   cyclesPerTrillion: nat;
+   daysOfReserve: nat;
+   lastCalculated: nat64;
+   maxPotentialCyclesNeeded: nat;
+   maxPotentialICPNeeded: float64;
+   maxPotentialUSDNeeded: float64;
+   maxPotentialXDRNeeded: float64;
+   reserveRatio: float64;
+   shortfallICP: float64;
+   shortfallUSD: float64;
+   totalCreditsRemaining: nat;
+   xdrRate: XDRRate;
+ };
+type HealthStatus = 
+ variant {
+   Critical;
+   Healthy;
+   Warning;
+ };
+type ForumThread = 
+ record {
+   acceptedAnswerId: opt text;
+   author: principal;
+   authorName: text;
+   categoryId: text;
+   categoryName: text;
+   content: text;
+   createdAt: nat64;
+   downvotes: nat;
+   hasAcceptedAnswer: bool;
+   isFeatured: bool;
+   isLocked: bool;
+   isPinned: bool;
+   lastReplyAt: opt nat64;
+   lastReplyBy: opt principal;
+   lastReplyByName: opt text;
+   replyCount: nat;
+   tags: vec text;
+   threadId: text;
+   title: text;
+   updatedAt: nat64;
+   upvotes: nat;
+   viewCount: nat;
+ };
+type ForumStats = 
+ record {
+   repliesToday: nat;
+   threadsToday: nat;
+   totalCategories: nat;
+   totalReplies: nat;
+   totalThreads: nat;
+   totalUsers: nat;
+ };
+type ForumReply = 
+ record {
+   author: principal;
+   authorName: text;
+   content: text;
+   createdAt: nat64;
+   downvotes: nat;
+   isAcceptedAnswer: bool;
+   isDeleted: bool;
+   isEdited: bool;
+   quotedReplyId: opt text;
+   replyId: text;
+   threadId: text;
+   updatedAt: nat64;
+   upvotes: nat;
+ };
+type ForumCategory = 
+ record {
+   categoryId: text;
+   color: text;
+   createdAt: nat64;
+   description: text;
+   icon: text;
+   isActive: bool;
+   lastActivity: opt nat64;
+   lastThreadId: opt text;
+   lastThreadTitle: opt text;
+   name: text;
+   orderIndex: nat;
+   postCount: nat;
+   slug: text;
+   threadCount: nat;
+   updatedAt: nat64;
+ };
+type FeePaymentStatus = 
+ variant {
+   completed;
+   failed;
+   pending;
+   refunded;
+ };
+type FeatureType = 
+ variant {
+   AIChat;
+   AgentWorkflow;
+   CanisterDeploy;
+   CodeGeneration;
+   DatabaseInterface;
+   FileStorage;
+   Marketplace;
+   ProjectCreate;
+   ProjectDeploy;
+   ServerPairOps;
+ };
+type FeatureMetrics = 
+ record {
+   agentsDeployed: nat;
+   aiRequestsByClaude: nat;
+   aiRequestsByGemini: nat;
+   aiRequestsByKimi: nat;
+   aiRequestsByOpenAI: nat;
+   aiRequestsTotal: nat;
+   avgDurationMs: float64;
+   avgTokensPerRequest: float64;
+   databaseQueries: nat;
+   filesStored: nat;
+   mostUsedFeatures: vec record {
+                           FeatureType;
+                           nat;
+                         };
+   projectsCreated: nat;
+   projectsDeployed: nat;
+   successRate: float64;
+   totalFeatureUsage: nat;
+ };
+type ErrorType = 
+ variant {
+   APIError;
+   AuthenticationError;
+   CanisterError;
+   DeploymentFailed;
+   NetworkError;
+   PaymentFailed;
+   StorageError;
+   UnknownError;
+   ValidationError;
+ };
+type ErrorSeverity = 
+ variant {
+   Critical;
+   High;
+   Low;
+   Medium;
+ };
+type ErrorMetrics = 
+ record {
+   avgResolutionTimeMs: nat;
+   errorRate: float64;
+   errorsByAPI: nat;
+   errorsByAuth: nat;
+   errorsByCanister: nat;
+   errorsByCritical: nat;
+   errorsByDeployment: nat;
+   errorsByHigh: nat;
+   errorsByLow: nat;
+   errorsByMedium: nat;
+   errorsByPayment: nat;
+   errorsThisMonth: nat;
+   errorsThisWeek: nat;
+   errorsToday: nat;
+   totalErrors: nat;
+   unresolvedErrors: nat;
+ };
+type EnrollmentStatus = 
+ variant {
+   completed;
+   dropped;
+   inProgress;
+   notStarted;
+   suspended;
+ };
+type DownloadToken = 
+ record {
+   buyer: principal;
+   createdAt: nat64;
+   downloadCount: nat;
+   expiresAt: nat64;
+   exportId: text;
+   isRevoked: bool;
+   lastUsedAt: opt nat64;
+   listingId: text;
+   maxDownloads: nat;
+   purchaseId: text;
+   revokedAt: opt nat64;
+   revokedReason: opt text;
+   tokenId: text;
+   userCanisterId: principal;
+ };
+type DomainType = 
+ variant {
+   Ai;
+   App;
+   Cloud;
+   Com;
+   Dev;
+   Io;
+   Net;
+   Other: text;
+   Tech;
+ };
+type DomainStatistics = 
+ record {
+   avgCostPerDomainCents: nat;
+   avgPurchasesPerMonth: float64;
+   domainsByType: vec record {
+                        DomainType;
+                        nat;
+                      };
+   forecastedMonthlyCostCents: nat;
+   purchasesThisMonth: nat;
+   renewalCostNext30DaysCents: nat;
+   renewalsNext30Days: nat;
+   requiredNameSiloBalanceUSD: float64;
+   totalCostCents: nat;
+   totalDomainsPurchased: nat;
+ };
+type DifficultyLevel = 
+ variant {
+   advanced;
+   beginner;
+   expert;
+   intermediate;
+ };
+type DegreeType = 
+ variant {
+   associate;
+   bachelor;
+   certificate;
+   diploma;
+   master;
+   nanodegree;
+   specialization;
+ };
+type DateRange = 
+ record {
+   endDate: nat64;
+   startDate: nat64;
+ };
+type DashboardData = 
+ record {
+   errors: ErrorMetrics;
+   featureUsage: FeatureMetrics;
+   generatedAt: nat64;
+   marketplace: MarketplaceMetrics;
+   performance: PerformanceMetrics;
+   revenue: RevenueMetrics;
+   systemHealth: SystemHealthMetrics;
+   userActivity: UserMetrics;
+ };
+type CourseEnrollment = 
+ record {
+   completedAt: opt nat64;
+   completedLessonIds: vec text;
+   courseId: text;
+   currentLessonId: opt text;
+   enrolledAt: nat64;
+   enrollmentId: text;
+   lastAccessedAt: nat64;
+   progress: float64;
+   startedAt: opt nat64;
+   status: EnrollmentStatus;
+   student: principal;
+   timeSpent: nat;
+ };
+type Course = 
+ record {
+   accessTier: AccessTier;
+   averageRating: float64;
+   category: text;
+   completionCount: nat;
+   courseId: text;
+   createdAt: nat64;
+   credits: nat;
+   description: text;
+   difficulty: DifficultyLevel;
+   enrollmentCount: nat;
+   estimatedHours: nat;
+   instructor: principal;
+   instructorName: text;
+   isActive: bool;
+   isPublished: bool;
+   lessonIds: vec text;
+   prerequisites: vec text;
+   programId: opt text;
+   shortDescription: text;
+   syllabus: vec SyllabusItem;
+   tags: vec text;
+   thumbnailUrl: text;
+   title: text;
+   updatedAt: nat64;
+ };
+type CanisterReplacementInfo = 
+ record {
+   dataTransferred: bool;
+   newCanisterId: principal;
+   oldCanisterId: principal;
+   reason: text;
+   replacedAt: nat64;
+   userPrincipal: principal;
+ };
+type CanisterPoolType = 
+ variant {
+   AgencyWorkflowPair;
+   AgentServerPair;
+   RegularServerPair;
+   UserCanister;
+ };
+type CanisterDefaultSettings = 
+ record {
+   computeAllocation: nat;
+   cyclesAmount: nat;
+   durationInDays: nat;
+   freezingThreshold: opt nat;
+   memoryGB: nat;
+ };
+type AccessTier = 
+ variant {
+   developer;
+   enterprise;
+   free;
+   pro;
+   starter;
+ };
+type AcademicProgram = 
+ record {
+   averageRating: float64;
+   category: text;
+   completionCount: nat;
+   courseIds: vec text;
+   createdAt: nat64;
+   degreeType: DegreeType;
+   description: text;
+   difficulty: DifficultyLevel;
+   electiveCourses: vec text;
+   enrollmentCount: nat;
+   estimatedHours: nat;
+   instructor: principal;
+   instructorName: text;
+   isActive: bool;
+   isPublished: bool;
+   prerequisites: vec text;
+   programId: text;
+   requiredCourses: vec text;
+   shortDescription: text;
+   tags: vec text;
+   thumbnailUrl: text;
+   title: text;
+   totalCredits: nat;
+   updatedAt: nat64;
+ };
+type AITokenReserve = 
+ record {
+   avgTokensPerCredit: float64;
+   claudeInputCostPerMillion: float64;
+   claudeOutputCostPerMillion: float64;
+   currentClaudeBalance: float64;
+   daysOfReserve: nat;
+   lastCalculated: nat64;
+   maxPotentialAICostUSD: float64;
+   requiredClaudeBalance: float64;
+   reserveRatio: float64;
+   shortfallUSD: float64;
+   totalCreditsRemaining: nat;
+ };
+type AIModel = 
+ variant {
+   Claude;
+   Gemini;
+   Kimi;
+   OpenAI;
+ };
+service : {
+  addAdmin: (newAdminPrincipal: principal) -> (Result_8);
+  /// * Add a server pair to the pool
+  addServerPairToPool: (pairId: text, frontendCanisterId: principal,
+   backendCanisterId: principal, poolType: CanisterPoolType, metadata:
+   opt vec record {
+             text;
+             text;
+           }) -> (Result_9);
+  /// * Add team member
+  addTeamMember: (name: text, role: text, revenueSharePercent: float64,
+   subscriptionShare: bool, creditCommissionShare: bool, marketplaceShare:
+   bool) -> (Result_11);
+  /// * Add a user canister to the pool
+  addUserCanisterToPool: (canisterId: principal, memoryGB: nat, durationDays:
+   nat, metadata: opt vec record {
+                            text;
+                            text;
+                          }) -> (Result_9);
+  /// * Add bookmark to video at specific timestamp
+  addVideoBookmark: (lessonId: text, timestamp: nat, title: text) -> (Result);
+  /// * Add note to video at specific timestamp
+  addVideoNote: (lessonId: text, timestamp: nat, content: text) -> (Result);
+  /// * Replace a user's canister with a new one (Admin only - for critical issues)
+  ///      * Note: This is a placeholder - actual implementation would need data migration logic
+  adminReplaceUserCanister: (userPrincipal: principal, newCanisterId:
+   principal, reason: text) -> (Result_50);
+  /// * Top up a user's canister (Admin only - for support/troubleshooting)
+  adminTopUpUserCanister: (userPrincipal: principal, icpE8s: nat) ->
+   (Result_8);
+  /// * Assign a pooled server pair to a user
+  assignServerPairFromPool: (pairId: text, userPrincipal: principal) ->
+   (Result_9);
+  /// * Assign a pooled user canister to a user
+  assignUserCanisterFromPool: (canisterId: principal, userPrincipal:
+   principal) -> (Result_9);
+  /// * Calculate AI Token Reserve
+  ///      * Shows how much $ needed in Claude API account
+  calculateAITokenReserve: () -> (Result_49) query;
+  /// * Calculate ICP Reserve
+  ///      * Shows how much ICP needed in platform wallet
+  calculateICPReserve: () -> (Result_48);
+  /// * Calculate team earnings
+  calculateTeamEarnings: () -> (Result_47) query;
+  clearAllLogs: () -> (nat);
+  /// * Clear analytics cache (admin only)
+  clearAnalyticsCache: () -> (Result);
+  /// * Clear Subscription Cache (for testing/debugging)
+  clearSubscriptionCache: () -> (Result);
+  /// * Create a new academic program (Admin/Instructor only)
+  createAcademicProgram: (title: text, description: text, shortDescription:
+   text, thumbnailUrl: text, instructorName: text, courseIds: vec text,
+   requiredCourses: vec text, electiveCourses: vec text, totalCredits: 
+   nat, estimatedHours: nat, difficulty: DifficultyLevel, category: text,
+   tags: vec text, prerequisites: vec text, degreeType: DegreeType) ->
+   (Result_8);
+  /// * Create Billing Portal Session
+  ///      * 🔐 BACKEND ONLY
+  createBillingPortalSession: (customerId: text, returnUrl: text) ->
+   (Result_46);
+  createCanisterWithSettings: (userPrincipal: principal, memoryGB: nat,
+   computeAllocation: nat, freezingThreshold: opt nat, durationInDays: 
+   nat, cyclesAmount: nat) -> (Result_8);
+  /// * Create Checkout Session (for subscriptions)
+  ///      * 🔐 BACKEND ONLY
+  createCheckoutSession: (priceId: text, tier: text, successUrl: text,
+   cancelUrl: text) -> (Result_45);
+  /// * Create a new course (Admin/Instructor only)
+  createCourse: (programId: opt text, title: text, description: text,
+   shortDescription: text, thumbnailUrl: text, instructorName: text,
+   lessonIds: vec text, credits: nat, estimatedHours: nat, difficulty:
+   DifficultyLevel, category: text, tags: vec text, prerequisites: vec text,
+   accessTier: AccessTier, syllabus: vec SyllabusItem) -> (Result_8);
+  createForumCategory: (name: text, description: text, icon: text, slug:
+   text, color: text, orderIndex: nat) -> (text);
+  createForumReply: (threadId: text, content: text, quotedReplyId:
+   opt text) -> (text);
+  createForumThread: (categoryId: text, title: text, content: text, tags:
+   vec text) -> (text);
+  /// * Create a learning path (Admin only)
+  createLearningPath: (title: text, description: text, programIds: vec text,
+   courseIds: vec text, estimatedHours: nat, difficulty: DifficultyLevel,
+   forRole: text) -> (Result_8);
+  /// * Create a new lesson/video (Admin/Instructor only)
+  createLesson: (courseId: text, title: text, description: text,
+   youtubeVideoId: text, duration: nat, orderIndex: nat, accessTier:
+   AccessTier, isFree: bool, resources: vec LessonResource, transcript:
+   opt text) -> (Result_8);
+  /// * Create a new platform notification (Admin only)
+  createNotification: (severity: NotificationSeverity, category:
+   NotificationCategory, audience: NotificationAudience, title: text,
+   message: text, icon: opt text, metadata: opt vec record {
+                                                      text;
+                                                      text;
+                                                    }, actions:
+   opt vec NotificationAction, expiresAt: opt nat64, isPinned: bool) ->
+   (Result_11);
+  /// * Create Payment Intent (for one-time credit purchases)
+  ///      * 🔐 BACKEND ONLY - Frontend never sees secret key
+  createPaymentIntent: (amountInCents: nat, currency: text, description:
+   text) -> (Result_44);
+  createPlatformWallet: () -> (text);
+  /// * Create a review for a purchased project
+  createReview: (listingId: text, purchaseId: text, rating: nat, title: 
+   text, comment: text, pros: vec text, cons: vec text, wouldRecommend:
+   bool) -> (Result_8);
+  deleteCanister: (canisterId: principal) -> (Result_8);
+  deleteForumCategory: (categoryId: text) -> (bool);
+  deleteForumReply: (threadId: text, replyId: text) -> (bool);
+  deleteForumThread: (threadId: text) -> (bool);
+  deleteMarketplaceListing: (listingId: text) -> (Result);
+  /// * Delete a specific notification (Admin only)
+  deleteNotification: (notificationId: nat) -> (Result_9);
+  /// * Delete a review
+  deleteReview: (reviewId: text) -> (Result);
+  deleteSubscriptionPlan: (tier: SubscriptionTier) -> (Result_9);
+  deployStoredWasm: (fileName: text, canisterId: principal, userPrincipal:
+   principal) -> (Result_8);
+  deployToExistingCanister: (canisterId: principal, wasm: vec nat8) ->
+   (Result_8);
+  /// * Dismiss a specific notification
+  dismissNotification: (notificationId: nat) -> ();
+  /// * Enroll in course
+  enrollInCourse: (courseId: text) -> (Result_8);
+  /// * Enroll in academic program
+  enrollInProgram: (programId: text) -> (Result_8);
+  finalizeWasmUpload: (sessionId: text) -> (Result_8);
+  generateDownloadToken: (purchaseId: text) -> (Result_43);
+  generateTestLogs: () -> ();
+  /// * Get academic program by ID
+  getAcademicProgram: (programId: text) -> (opt AcademicProgram) query;
+  getActiveForumCategories: () -> (vec ForumCategory) query;
+  getActiveSubscriptionPlans: () -> (vec SubscriptionPlan) query;
+  getAdminPrincipal: () -> (Result_8);
+  getAdmins: () -> (Result_42);
+  /// * Get all courses (including unpublished) - Admin only
+  getAllCourses: () -> (Result_41) query;
+  /// * Get all courses (including unpublished, paginated) - Admin only
+  getAllCoursesPaginated: (limit: nat, offset: nat) -> (Result_40) query;
+  getAllForumCategories: () -> (vec ForumCategory) query;
+  getAllListings: () -> (Result_39) query;
+  getAllListingsPaginated: (limit: nat, offset: nat) -> (Result_38) query;
+  /// * Get all notifications (Admin only)
+  getAllNotifications: () -> (Result_37) query;
+  /// * Get all server pairs in pool
+  getAllPooledServerPairs: (poolType: opt CanisterPoolType) ->
+   (Result_36) query;
+  /// * Get all user canisters in pool
+  getAllPooledUserCanisters: () -> (Result_35) query;
+  /// * Get all programs (including unpublished) - Admin only
+  getAllPrograms: () -> (Result_34) query;
+  /// * Get all programs (including unpublished, paginated) - Admin only
+  getAllProgramsPaginated: (limit: nat, offset: nat) -> (Result_33) query;
+  getAllSubscriptionPlans: (caller: principal) -> (Result_32) query;
+  /// * Get all users with their canister IDs (Admin only - for overview)
+  getAllUserCanisters: () -> (Result_31) query;
+  /// * Get analytics data counts (for debugging)
+  getAnalyticsDataCounts: () -> (Result_30) query;
+  /// * Get an available server pair from the pool (for server pair creation flow)
+  getAvailableServerPairFromPool: (poolType: CanisterPoolType) ->
+   (opt PooledServerPair);
+  /// * Get an available user canister from the pool (for user creation flow)
+  getAvailableUserCanisterFromPool: () -> (opt PooledCanister);
+  /// * Get import history for buyer
+  getBuyerImports: () -> (vec ProjectImport) query;
+  getBuyerPurchases: () -> (vec VerifiedPurchase) query;
+  getCallerPrincipal: () -> (text);
+  /// * Get course by ID
+  getCourse: (courseId: text) -> (opt Course) query;
+  /// * Get courses by access tier
+  getCoursesByTier: (tier: AccessTier) -> (vec Course) query;
+  /// * Get courses by access tier (paginated)
+  getCoursesByTierPaginated: (tier: AccessTier, limit: nat, offset: nat) ->
+   (vec Course, nat) query;
+  /// * Get credit commission percentage
+  getCreditCommissionPercent: () -> (float64) query;
+  /// * Get comprehensive dashboard data
+  getDashboardData: (timeWindow: TimeWindow) -> (Result_29) query;
+  /// * Get domain statistics
+  getDomainStatistics: () -> (Result_28) query;
+  /// * Get error metrics
+  getErrorMetrics: (timeWindow: TimeWindow) -> (Result_27) query;
+  /// * Get feature usage metrics
+  getFeatureUsageMetrics: (timeWindow: TimeWindow) -> (Result_26) query;
+  /// * Get fee payment by ID (admin only)
+  getFeePaymentById: (paymentId: text) -> (Result_13) query;
+  /// * Get complete financial dashboard
+  getFinancialDashboard: () -> (Result_8);
+  getForumCategory: (categoryId: text) -> (opt ForumCategory) query;
+  getForumReplies: (threadId: text) -> (vec ForumReply) query;
+  getForumRepliesPaginated: (threadId: text, limit: nat, offset: nat) ->
+   (vec ForumReply, nat) query;
+  getForumStats: () -> (ForumStats) query;
+  getForumThread: (threadId: text) -> (opt ForumThread) query;
+  getForumThreadsByCategory: (categoryId: text) -> (vec ForumThread) query;
+  getForumThreadsByCategoryPaginated: (categoryId: text, limit: nat, offset:
+   nat) -> (vec ForumThread, nat) query;
+  /// * Get all learning paths
+  getLearningPaths: () -> (vec LearningPath) query;
+  /// * Get lesson by ID
+  getLesson: (lessonId: text) -> (opt Lesson) query;
+  /// * Get lessons by course ID
+  getLessonsByCourse: (courseId: text) -> (vec Lesson) query;
+  /// * Get lessons by course (paginated)
+  getLessonsByCoursePaginated: (courseId: text, limit: nat, offset: nat) ->
+   (vec Lesson, nat) query;
+  /// * Get current listing fee configuration (public query)
+  getListingFeeConfig: () -> (ListingFeeConfig) query;
+  /// * Get review summary/statistics for a listing
+  getListingReviewSummary: (listingId: text) -> (ReviewSummary) query;
+  /// * Get reviews for a listing
+  getListingReviews: (listingId: text) -> (vec ProjectReview) query;
+  getListingsByCategory: (category: text) -> (vec MarketplaceListing) query;
+  getListingsByCategoryPaginated: (category: text, limit: nat, offset:
+   nat) -> (vec MarketplaceListing, nat) query;
+  getLoggerStatus: () ->
+   (record {
+      canisterType: text;
+      loggerInitialized: bool;
+      logsAvailable: bool;
+    }) query;
+  getLogs: () -> (vec text) query;
+  getMarketplaceListing: (listingId: text) -> (opt MarketplaceListing) query;
+  /// * Get marketplace metrics
+  getMarketplaceMetrics: (timeWindow: TimeWindow) -> (Result_25) query;
+  /// * Get student's enrollments
+  getMyEnrollments: () ->
+   (record {
+      courses: vec CourseEnrollment;
+      programs: vec ProgramEnrollment;
+    }) query;
+  getNewLogsSince: (marker: nat, maxLogsOpt: opt nat) ->
+   (record {
+      logs: vec text;
+      nextMarker: nat;
+    }) query;
+  /// * Get notification statistics (Admin only)
+  getNotificationStats: () -> (Result_24) query;
+  /// * Get notifications for the current user (Query - FREE)
+  getNotifications: (since: nat64, limit: opt nat) ->
+   (vec NotificationEvent) query;
+  getPaymentHistory: (userPrincipal: opt principal) -> (Result_23);
+  /// * Get pending review reports (admin only)
+  getPendingReviewReports: () -> (Result_22) query;
+  /// * Get performance metrics
+  getPerformanceMetrics: (timeWindow: TimeWindow) -> (Result_21) query;
+  getPlatformBalance: () -> (nat);
+  getPlatformCycleBalance: () -> (nat);
+  getPlatformTransactions: (limit: opt nat) -> (vec Transaction) query;
+  getPlatformWalletId: () ->
+   (opt record {
+          accountIdentifier: text;
+          "principal": text;
+          subaccount: text;
+        }) query;
+  /// * Get pool statistics
+  getPoolStats: (poolType: CanisterPoolType) -> (Result_20) query;
+  getPricingInfo: () ->
+   (record {
+      creditsPerUSD: nat;
+      description: text;
+      maxAmountUSD: float64;
+      minAmountUSD: float64;
+    }) query;
+  /// * Get all published courses
+  getPublishedCourses: () -> (vec Course) query;
+  /// * Get published courses (paginated)
+  getPublishedCoursesPaginated: (limit: nat, offset: nat) -> (vec Course,
+   nat) query;
+  getPublishedListings: () -> (vec MarketplaceListing) query;
+  getPublishedListingsPaginated: (limit: nat, offset: nat) ->
+   (vec MarketplaceListing, nat) query;
+  /// * Get all published programs
+  getPublishedPrograms: () -> (vec AcademicProgram) query;
+  /// * Get published programs (paginated)
+  getPublishedProgramsPaginated: (limit: nat, offset: nat) ->
+   (vec AcademicProgram, nat) query;
+  /// * Get remote files configuration (Public query)
+  ///      * Includes WASMs, prompts, rules, and other remotely stored files
+  getRemoteFilesConfig: () ->
+   (record {
+      agencyWasm: text;
+      agencyWasmGz: text;
+      agentWasm: text;
+      agentWasmGz: text;
+      assetCanisterId: text;
+      assetStorageWasm: text;
+      backendPrompt: text;
+      backendRules: text;
+      basePath: text;
+      frontendPrompt: text;
+      frontendRules: text;
+      userCanisterWasm: text;
+    }) query;
+  /// * Get revenue metrics
+  getRevenueMetrics: (timeWindow: TimeWindow) -> (Result_19) query;
+  /// * Get all fee payments for a seller
+  getSellerFeePayments: () -> (vec ListingFeePayment) query;
+  getSellerListings: () -> (vec MarketplaceListing) query;
+  getSellerListingsPaginated: (limit: nat, offset: nat) ->
+   (vec MarketplaceListing, nat) query;
+  getSellerSales: () -> (vec VerifiedPurchase) query;
+  getStripePublishableKey: () -> (text) query;
+  /// * Get subscription allocations
+  getSubscriptionAllocations: () -> (vec SubscriptionAllocation) query;
+  getSubscriptionPlanByTier: (tier: SubscriptionTier) ->
+   (opt SubscriptionPlan) query;
+  /// * Generate comprehensive AI prompt for subscription enforcement (admin only)
+  ///      * Returns a formatted document explaining all tiers and enforcement requirements
+  getSubscriptionPrompt: (caller: principal) -> (Result_8) query;
+  /// * Get Subscription Status (with 1-hour caching)
+  ///      * 🚀 PHASE 1: Prevents excessive Stripe API calls on every page refresh
+  ///      * 
+  ///      * Returns cached subscription status if:
+  ///      * - Cache exists for user
+  ///      * - Cache is less than 1 hour old
+  ///      * - forceRefresh is false
+  ///      * 
+  ///      * Otherwise, returns cached value WITHOUT checking Stripe (check only on login/manual refresh)
+  getSubscriptionStatus: (forceRefresh: bool) -> (Result_18);
+  /// * Get system health metrics
+  getSystemHealthMetrics: () -> (Result_17) query;
+  /// * Get team members
+  getTeamMembers: () -> (Result_16) query;
+  /// * Get unread notification count (Query - FREE)
+  getUnreadNotificationCount: () -> (nat) query;
+  /// * Get user activity metrics
+  getUserActivityMetrics: (timeWindow: TimeWindow) -> (Result_15) query;
+  /// * Get user canister information for admin troubleshooting
+  getUserCanisterInfo: (userPrincipal: principal) -> (Result_14);
+  getUserForumProfile: (userId: principal) -> (opt UserForumProfile) query;
+  getUserPlatformCanister: (userPrincipal: principal) -> (vec principal);
+  /// * Get video progress
+  getVideoProgress: (lessonId: text) -> (opt VideoProgress) query;
+  /// * Deprecated: Use getRemoteFilesConfig() instead
+  ///      * Kept for backward compatibility
+  getWasmConfig: () ->
+   (record {
+      agencyWasm: text;
+      agencyWasmGz: text;
+      agentWasm: text;
+      agentWasmGz: text;
+      assetCanisterId: text;
+      assetStorageWasm: text;
+      basePath: text;
+      userCanisterWasm: text;
+    }) query;
+  /// * Hide a review (admin only)
+  hideReview: (reviewId: text, reason: text) -> (Result);
+  /// * HTTP Request Handler (Query)
+  ///      * Handles GET requests for webhook verification
+  http_request: (request:
+   record {
+     body: blob;
+     headers: vec record {
+                    text;
+                    text;
+                  };
+     method: text;
+     url: text;
+   }) ->
+   (record {
+      body: blob;
+      headers: vec record {
+                     text;
+                     text;
+                   };
+      status_code: nat16;
+    }) query;
+  /// * HTTP Request Update Handler (Update Call)
+  ///      * Handles POST requests for webhook events
+  http_request_update: (request:
+   record {
+     body: blob;
+     headers: vec record {
+                    text;
+                    text;
+                  };
+     method: text;
+     url: text;
+   }) ->
+   (record {
+      body: blob;
+      headers: vec record {
+                     text;
+                     text;
+                   };
+      status_code: nat16;
+    });
+  /// * Import purchased project directly to buyer's workspace
+  importPurchasedProject: (purchaseId: text, buyerUserCanisterId:
+   principal) -> (Result_8);
+  incrementForumThreadViews: (threadId: text) -> (bool);
+  initializeDefaultSubscriptionPlans: () -> (Result_8);
+  isAdmin: () -> (bool);
+  /// * Check if listing fee is paid for a listing
+  isListingFeePaid: (listingId: text) -> (bool) query;
+  /// * Check if listing tier has expired
+  isListingTierActive: (listingId: text) -> (bool) query;
+  lockForumThread: (threadId: text, isLocked: bool) -> (bool);
+  logDebug: (message: text) -> ();
+  logError: (message: text) -> ();
+  logInfo: (message: text) -> ();
+  logWarn: (message: text) -> ();
+  markAcceptedAnswer: (threadId: text, replyId: text) -> (bool);
+  /// * Mark notifications as read
+  markNotificationsAsRead: (timestamp: nat64) -> ();
+  markTokenUsed: (tokenId: text) -> (Result);
+  pinForumThread: (threadId: text, isPinned: bool) -> (bool);
+  /// * Prune old notifications (Admin only)
+  pruneOldNotifications: () -> (Result_11);
+  publishListing: (listingId: text) -> (Result);
+  /// * Record listing fee payment (called after Stripe payment confirmed)
+  recordListingFeePayment: (listingId: text, stripePaymentIntentId: text,
+   amountPaid: nat, feeType: ListingFeeType) -> (Result_13);
+  recordPaymentAndCreditUser: (paymentIntentId: text, amountUSD: float64,
+   userCanisterId: principal) -> (Result_8);
+  recordPaymentWithCalculatedICP: (paymentIntentId: text, amountUSD: 
+   float64, userCanisterId: principal, credits: nat, tbCycles: float64,
+   icpE8sCalculated: nat) -> (Result_8);
+  /// * Record system health snapshot
+  recordSystemHealth: () -> ();
+  /// * Refund listing fee (admin only)
+  refundListingFee: (paymentId: text, refundReason: text) -> (Result);
+  registerMarketplaceListing: (projectId: text, userCanisterId: principal,
+   exportId: text, title: text, description: text, price: nat,
+   stripeAccountId: text, previewImages: vec text, demoUrl: opt text,
+   category: text, tags: vec text, version: text) -> (Result_7);
+  removeAdmin: (adminToRemove: principal) -> (Result_8);
+  /// * Remove a server pair from the pool
+  removeServerPairFromPool: (pairId: text) -> (Result_9);
+  /// * Remove a user canister from the pool
+  removeUserCanisterFromPool: (canisterId: principal) -> (Result_9);
+  removeUserPlatformCanister: (userPrincipal: principal) -> (Result_8);
+  /// * Report a review for moderation
+  reportReview: (reviewId: text, reason: ReportReason, description: text) ->
+   (Result_8);
+  /// * Resolve error
+  resolveError: (errorId: nat) -> (Result);
+  /// * Seller responds to a review
+  respondToReview: (reviewId: text, responseText: text) -> (Result);
+  revokeDownloadToken: (tokenId: text, reason: text) -> (Result);
+  searchForum: (searchQuery: text) -> (vec SearchResult) query;
+  searchForumPaginated: (searchQuery: text, limit: nat, offset: nat) ->
+   (vec SearchResult, nat) query;
+  /// * Search for customer by principal
+  ///      * 🔐 BACKEND ONLY
+  searchStripeCustomer: (userPrincipal: principal) -> (Result_12);
+  sendICPFromPlatform: (toPrincipal: principal, amount: nat) -> (Result_8);
+  sendICPFromPlatformToAccountId: (toAccountId: text, amount: nat) ->
+   (Result_8);
+  startWasmUploadSession: (fileName: text, totalChunks: nat, totalSize:
+   nat) -> (Result_8);
+  topUpCanisterCMC: (canisterId: principal, amount: nat) -> (Result_8);
+  topUpUserCanisterFromPlatform: (userCanisterId: principal, icpAmount:
+   float64) -> (Result_8);
+  topUpUserCanisterWithExactICP: (userCanisterId: principal, icpE8s: 
+   nat) -> (Result_8);
+  /// * Track credit commission revenue (20% markup)
+  trackCreditCommission: (userId: principal, baseCostCredits: nat,
+   commissionCredits: nat) -> ();
+  /// * Track domain purchase
+  trackDomainPurchase: (domainName: text, domainType: DomainType, costCents:
+   nat, provider: text) -> (Result_11);
+  /// * Track errors
+  trackError: (errorType: ErrorType, errorMessage: text, feature: opt text,
+   severity: ErrorSeverity, stackTrace: opt text) -> (nat);
+  /// * Track feature usage
+  trackFeatureUsage: (feature: FeatureType, aiModel: opt AIModel,
+   tokensConsumed: opt nat, durationMs: opt nat, success: bool, errorMessage:
+   opt text) -> ();
+  /// * Track marketplace activity
+  trackMarketplaceActivity: (listingId: text, sellerId: principal, buyerId:
+   opt principal, action: MarketplaceAction, priceCents: opt nat, category:
+   opt text) -> ();
+  /// * Track performance
+  trackPerformance: (operation: OperationType, durationMs: nat, success:
+   bool) -> ();
+  /// * Track revenue
+  trackRevenue: (amountCents: nat, currency: text, tier: opt text,
+   paymentType: PaymentType, status: PaymentStatus__1, stripePaymentId:
+   opt text) -> ();
+  /// * Track user activity
+  trackUserActivity: (action: UserAction, sessionId: opt text, metadata:
+   opt text) -> ();
+  /// * Unhide a review (admin only)
+  unhideReview: (reviewId: text) -> (Result);
+  unpublishListing: (listingId: text) -> (Result);
+  /// * Update academic course (Admin/Instructor only)
+  updateAcademicCourse: (courseId: text, title: opt text, description:
+   opt text, shortDescription: opt text, lessonIds: opt vec text,
+   isPublished: opt bool, isActive: opt bool) -> (Result);
+  /// * Update academic program (Admin/Instructor only)
+  updateAcademicProgram: (programId: text, title: opt text, description:
+   opt text, shortDescription: opt text, courseIds: opt vec text,
+   isPublished: opt bool) -> (Result);
+  updateAdminPrincipal: (newAdminPrincipal: text) -> (Result_8);
+  updateCanisterDefaults: (settings: CanisterDefaultSettings) -> (Result_8);
+  /// * Update current balances (admin only)
+  updateCurrentBalances: (claudeBalanceUSD: float64, icpBalance: float64) ->
+   (Result);
+  updateForumCategory: (categoryId: text, name: opt text, description:
+   opt text, icon: opt text, color: opt text, orderIndex: opt nat, isActive:
+   opt bool) -> (bool);
+  updateForumReply: (threadId: text, replyId: text, content: text) -> (bool);
+  updateForumThread: (threadId: text, title: opt text, content: opt text,
+   tags: opt vec text) -> (bool);
+  /// * Update listing fee configuration (admin only)
+  updateListingFeeConfig: (basicFee: opt nat, featuredFee: opt nat,
+   premiumFee: opt nat, featuredDurationDays: opt nat, premiumDurationDays:
+   opt nat) -> (Result_10);
+  updateMarketplaceListing: (listingId: text, price: opt nat, title:
+   opt text, description: opt text, previewImages: opt vec text, demoUrl:
+   opt opt text, tags: opt vec text, version: opt text, isActive:
+   opt bool) -> (Result_7);
+  /// * Update server pair cycle balances in pool
+  updatePooledServerPairCycles: (pairId: text, frontendCycles: nat,
+   backendCycles: nat) -> (Result_9);
+  /// * Update user canister cycle balance in pool
+  updatePooledUserCanisterCycles: (canisterId: principal, cycles: nat) ->
+   (Result_9);
+  /// * Update remote files configuration (Admin only)
+  ///      * Includes WASMs, prompts, rules, and other remotely stored files
+  updateRemoteFilesConfig: (assetCanisterId: opt text, basePath: opt text,
+   userCanisterWasm: opt text, assetStorageWasm: opt text, agentWasm:
+   opt text, agentWasmGz: opt text, agencyWasm: opt text, agencyWasmGz:
+   opt text, backendPrompt: opt text, frontendPrompt: opt text, backendRules:
+   opt text, frontendRules: opt text) -> (Result_8);
+  /// * Update a review
+  updateReview: (reviewId: text, rating: opt nat, title: opt text, comment:
+   opt text, pros: opt vec text, cons: opt vec text, wouldRecommend:
+   opt bool) -> (Result);
+  updateStripeKeys: (newSecretKey: text, newPublishableKey: text) ->
+   (Result_8);
+  /// * Update Subscription Cache (called after payment/subscription events)
+  ///      * Allows manual cache updates without calling Stripe
+  updateSubscriptionCache: (userPrincipal: principal, tier: text, active:
+   bool, expiresAt: nat64, stripeCustomerId: opt text) -> (Result);
+  /// * Update team member
+  updateTeamMember: (memberId: nat, revenueSharePercent: opt float64, active:
+   opt bool) -> (Result);
+  /// * Update video progress
+  updateVideoProgress: (lessonId: text, watchedDuration: nat, totalDuration:
+   nat, lastPosition: nat, playbackSpeed: float64, isCompleted: bool) ->
+   (Result_8);
+  /// * Deprecated: Use updateRemoteFilesConfig() instead
+  ///      * Kept for backward compatibility
+  updateWasmConfig: (assetCanisterId: opt text, basePath: opt text,
+   userCanisterWasm: opt text, assetStorageWasm: opt text, agentWasm:
+   opt text, agentWasmGz: opt text, agencyWasm: opt text, agencyWasmGz:
+   opt text) -> (Result_8);
+  /// * Upgrade listing tier (after fee payment)
+  upgradeListingTier: (listingId: text, newTier: ListingTier) -> (Result_7);
+  uploadWasmChunk: (sessionId: text, chunkIndex: nat, chunkData: vec nat8) ->
+   (Result_6);
+  upsertSubscriptionPlan: (planInput: SubscriptionPlanInput) -> (Result_5);
+  validateDownloadToken: (tokenId: text) -> (Result_4) query;
+  verifyPayment: (paymentIntentId: text) -> (Result_3);
+  /// * Verify Payment Intent
+  ///      * 🔐 BACKEND ONLY
+  verifyPaymentIntent: (paymentIntentId: text) -> (Result_2);
+  verifyPurchase: (listingId: text, buyer: principal, stripePaymentIntentId:
+   text, amountPaid: nat) -> (Result_1);
+  voteOnForumReply: (threadId: text, replyId: text, voteType: VoteType) ->
+   (bool);
+  voteOnForumThread: (threadId: text, voteType: VoteType) -> (bool);
+  /// * Vote on review helpfulness
+  voteReviewHelpful: (reviewId: text, isHelpful: bool) -> (Result);
+  wallet_receive: () -> (record {accepted: nat64;});
+}

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "canisters": {
+    "kontext_backend": {
+      "type": "motoko",
+      "main": "src/kontext_backend/main.mo",
+      "dependencies": []
+    },
+    "user_canister": {
+      "type": "motoko",
+      "main": "src/kontext_user_canister/src/backend/src/user.mo",
+      "dependencies": []
+    },
+    "kontext_frontend": {
+      "type": "assets",
+      "source": [
+        "src/kontext_frontend/dist"
+      ],
+      "dependencies": []
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": "mops sources"
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:4943",
+      "type": "ephemeral"
+    },
+    "ic": {
+      "type": "persistent"
+    }
+  }
+}
+

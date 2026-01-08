@@ -1,0 +1,19 @@
+{
+  "name": "kontext",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:frontend",
+    "build:frontend": "cd src/kontext_frontend && npm install && npm run build",
+    "dfx:generate": "dfx generate",
+    "deploy:backend:ic": "dfx deploy kontext_backend --network ic",
+    "deploy:frontend:ic": "npm run build:frontend && NO_COLOR=1 dfx deploy kontext_frontend --network ic",
+    "deploy:all:ic": "npm run build:frontend && dfx deploy --network ic",
+    "deploy:backend:local": "dfx deploy kontext_backend --network local",
+    "deploy:frontend:local": "npm run build:frontend && NO_COLOR=1 dfx deploy kontext_frontend --network local",
+    "deploy:all:local": "npm run build:frontend && dfx deploy --network local",
+    "build:backend": "dfx build kontext_backend",
+    "build:all": "npm run build:frontend && dfx build"
+  }
+}
+
